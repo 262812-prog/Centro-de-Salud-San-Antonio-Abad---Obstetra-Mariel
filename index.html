@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Salud San Antonio Abad - Obstetra Mariel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #0f172a;
+            user-select: none;
+            overflow-x: hidden;
+        }
+        .font-heading {
+            font-family: 'Fredoka', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0d9488;
+            border-radius: 10px;
+        }
+
+        /* Consultorio Stage Graphics */
+        .clinic-stage {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 70%, #020617 100%);
+            perspective: 800px;
+        }
+
+        /* Characters Styles */
+        .character-avatar {
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Guinda Uniform (Obstetra Mariel Signature Color) */
+        .uniform-guinda {
+            background-color: #701a2b;
+            border-color: #9f1239;
+        }
+        .uniform-guinda-light {
+            background-color: #881337;
+        }
+
+        /* Patient Walk Animations */
+        .anim-entering {
+            animation: walkFromDoor 1.6s ease-out forwards;
+        }
+        .anim-sit-desk {
+            animation: sitAtDesk 1s ease-in-out forwards;
+        }
+        .anim-go-bed {
+            animation: walkToBed 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes walkFromDoor {
+            0% { transform: translateX(180px) scale(0.85); opacity: 0; }
+            100% { transform: translateX(0px) scale(1); opacity: 1; }
+        }
+        @keyframes sitAtDesk {
+            0% { transform: translateX(0px) translateY(0); }
+            100% { transform: translateX(-40px) translateY(12px) scale(0.95); }
+        }
+        @keyframes walkToBed {
+            0% { transform: translateX(-40px) translateY(12px) scale(0.95); }
+            50% { transform: translateX(-160px) translateY(-5px) scale(0.9); }
+            100% { transform: translateX(-220px) translateY(8px) rotate(-85deg) scale(0.9); }
+        }
+
+        /* Interactive Pulsing Tool Glow */
+        .pulse-tool-btn {
+            animation: pulseTool 1.6s infinite;
+        }
+        @keyframes pulseTool {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8); }
+            50% { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+        }
+
+        /* Dialogue Arrow */
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 25px;
+            border-width: 8px 8px 0;
+            border-style: solid;
+            border-color: #ffffff transparent;
+            display: block;
+            width: 0;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 min-h-screen text-slate-100 flex flex-col justify-between">
+
+    <!-- Top Header Navigation -->
+    <header class="bg-slate-900/90 backdrop-blur-md text-white shadow-xl sticky top-0 z-30 border-b border-rose-900/40">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap justify-between items-center">
+            
+            <!-- Logo & Obstetra Mariel Header Title -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-rose-900 rounded-full flex items-center justify-center text-rose-200 border-2 border-rose-500 shadow-md">
+                    <i class="fa-solid fa-user-nurse text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-heading text-base md:text-xl font-bold tracking-wide flex items-center gap-2 text-rose-200">
+                        <span>Centro de Salud San Antonio Abad</span>
+                    </h1>
+                    <p class="text-xs text-rose-300/80 flex items-center gap-1">
+                        <i class="fa-solid fa-user-doctor text-amber-400"></i> Obstetra Mariel
+                    </p>
+                </div>
+            </div>
+
+            <!-- Game Status Indicators: Lives, Points, Level -->
+            <div id="game-status" class="flex items-center gap-3 mt-2 sm:mt-0 bg-slate-950 px-4 py-1.5 rounded-full border border-rose-800/50">
+                <!-- Vidas / Heart Icons -->
+                <div class="flex items-center gap-1">
+                    <span class="text-xs text-slate-300 font-semibold mr-1">Vidas:</span>
+                    <div id="lives-container" class="flex text-rose-500 text-base">
+                        <i class="fa-solid fa-heart"></i>
+                        <i class="fa-solid fa-heart"></i>
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                </div>
+
+                <!-- Puntaje / Score -->
+                <div class="flex items-center gap-1 border-l border-slate-800 pl-3">
+                    <i class="fa-solid fa-star text-amber-400"></i>
+                    <span class="text-xs text-slate-300 font-semibold">Puntos:</span>
+                    <span id="score-text" class="font-bold text-yellow-400 text-base">0</span>
+                </div>
+
+                <!-- Paciente actual badge -->
+                <div class="flex items-center gap-1 border-l border-slate-800 pl-3">
+                    <span id="level-badge" class="bg-rose-900 text-rose-100 text-xs font-bold px-2.5 py-0.5 rounded-full border border-rose-600">Paciente 1/10</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overall Progress Bar -->
+        <div class="w-full bg-slate-950 h-1.5">
+            <div id="main-progress-bar" class="bg-gradient-to-r from-rose-700 via-amber-500 to-emerald-400 h-1.5 transition-all duration-500" style="width: 10%;"></div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto w-full p-2 md:p-4 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+        <!-- Left Sidebar: Patient Queue & Clinical Medical Tools -->
+        <aside class="lg:col-span-3 flex flex-col gap-4 order-2 lg:order-1">
+            
+            <!-- Patient Queue Panel -->
+            <div class="bg-slate-900 rounded-2xl shadow-md border border-slate-800 p-4">
+                <h3 class="font-heading font-bold text-rose-200 mb-3 flex items-center justify-between text-xs md:text-sm">
+                    <span><i class="fa-solid fa-users text-rose-400 mr-2"></i>Sala de Espera del C.S.</span>
+                    <span class="text-[10px] font-normal text-slate-400">10 Gestantes</span>
+                </h3>
+                <div id="levels-list" class="space-y-1.5 max-h-48 lg:max-h-64 overflow-y-auto pr-1">
+                    <!-- Dynamic level list inserted here -->
+                </div>
+            </div>
+
+            <!-- Medical Interactive Equipment Tools -->
+            <div class="bg-slate-900 rounded-2xl shadow-md border border-slate-800 p-4">
+                <h3 class="font-heading font-bold text-slate-200 mb-3 flex items-center text-xs md:text-sm text-rose-300">
+                    <i class="fa-solid fa-toolbox mr-2 text-rose-400"></i> Herramientas de Evaluación
+                </h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="openModal('calculator-modal')" class="bg-slate-800 hover:bg-rose-950/60 text-slate-200 p-2.5 rounded-xl border border-slate-700 hover:border-rose-500 text-xs font-bold flex flex-col items-center text-center transition">
+                        <i class="fa-solid fa-calculator text-base text-rose-400 mb-1"></i>
+                        <span>Gestograma e IMC</span>
+                    </button>
+                    <button onclick="openModal('hc-modal')" class="bg-slate-800 hover:bg-sky-950/60 text-slate-200 p-2.5 rounded-xl border border-slate-700 hover:border-sky-500 text-xs font-bold flex flex-col items-center text-center transition">
+                        <i class="fa-solid fa-file-medical text-base text-sky-400 mb-1"></i>
+                        <span>Historia CLAP</span>
+                    </button>
+                    <button onclick="openModal('vitals-modal')" class="bg-slate-800 hover:bg-emerald-950/60 text-slate-200 p-2.5 rounded-xl border border-slate-700 hover:border-emerald-500 text-xs font-bold flex flex-col items-center text-center transition col-span-2">
+                        <i class="fa-solid fa-book-medical text-base text-emerald-400 mb-1"></i>
+                        <span>Parámetros Obstétricos MINSA</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center & Right Screen: Consultation Room & Decision Engine -->
+        <section class="lg:col-span-9 flex flex-col gap-4 order-1 lg:order-2">
+            
+            <!-- CONSULTORIO VISUAL INTERACTIVE STAGE -->
+            <div class="clinic-stage rounded-2xl p-4 shadow-2xl border border-slate-800 relative overflow-hidden min-h-[320px] flex flex-col justify-between">
+                
+                <!-- Stage Header Overlay -->
+                <div class="flex justify-between items-center z-10">
+                    <!-- Location Status -->
+                    <div class="bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-xl shadow border border-rose-900/50 flex items-center gap-2.5">
+                        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></div>
+                        <div>
+                            <p class="text-xs font-bold text-rose-200" id="stage-location-text">Paso 1: Llamar a la gestante a la puerta</p>
+                            <p class="text-[10px] text-slate-400" id="stage-patient-sub">Centro de Salud San Antonio Abad</p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Location Controls (Puerta, Escritorio, Camilla) -->
+                    <div id="interactive-nav-controls" class="flex gap-2">
+                        <button id="btn-call-patient" onclick="triggerPatientEntrance()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow pulse-tool-btn transition">
+                            <i class="fa-solid fa-door-open"></i> <span>1. Hacer Pasar</span>
+                        </button>
+                        <button id="btn-sit-desk" onclick="movePatientToLocation('desk')" class="bg-slate-800 opacity-50 cursor-not-allowed text-slate-300 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-700 flex items-center gap-1.5 transition" disabled>
+                            <i class="fa-solid fa-chair text-rose-400"></i> <span>2. Tomar Asiento</span>
+                        </button>
+                        <button id="btn-go-bed" onclick="movePatientToLocation('bed')" class="bg-slate-800 opacity-50 cursor-not-allowed text-amber-300 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-700 flex items-center gap-1.5 transition" disabled>
+                            <i class="fa-solid fa-bed-pulse text-amber-400"></i> <span>3. Ir a Camilla</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Patient Speech Bubble Dialogue Area -->
+                <div id="speech-bubble" class="hidden absolute top-14 right-12 md:right-28 bg-white text-slate-900 p-3 rounded-2xl shadow-2xl max-w-xs md:max-w-sm z-30 speech-bubble text-xs md:text-sm font-bold border-2 border-rose-800 animate-bounce">
+                    <p id="speech-text">"¡Buenas tardes, Obstetra Mariel!"</p>
+                </div>
+
+                <!-- CLINIC SCENE GRAPHICS: CAMILLA, ESCRITORIO, OBSTETRA MARIEL (GUINDA) & GESTANTE -->
+                <div class="relative w-full h-56 mt-2 flex items-end justify-between px-2 md:px-8 z-10">
+                    
+                    <!-- Left: Camilla de Exploración Obstétrica + Equipos -->
+                    <div class="relative flex flex-col items-center">
+                        <div id="bed-interactive-zone" onclick="interactWithBedTools()" class="cursor-pointer group relative">
+                            <!-- Tools overlay floating over bed -->
+                            <div id="bed-tools-overlay" class="hidden absolute -top-10 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                                <button title="Medir Altura Uterina" class="bg-amber-500 text-slate-950 p-2 rounded-full text-xs shadow-lg pulse-tool-btn"><i class="fa-solid fa-ruler-vertical"></i></button>
+                                <button title="Auscultar FCF con Doppler" class="bg-sky-500 text-slate-950 p-2 rounded-full text-xs shadow-lg pulse-tool-btn"><i class="fa-solid fa-heart-pulse"></i></button>
+                                <button title="Control de Presión Arterial" class="bg-rose-500 text-white p-2 rounded-full text-xs shadow-lg pulse-tool-btn"><i class="fa-solid fa-stethoscope"></i></button>
+                            </div>
+                            <!-- Bed Graphic -->
+                            <div class="w-32 md:w-44 h-16 bg-slate-800 rounded-t-2xl border-2 border-slate-600 flex items-center justify-center relative shadow-2xl">
+                                <div class="w-8 h-12 bg-rose-950/40 rounded-lg absolute left-2 top-2 border border-rose-800/40"></div>
+                                <span class="text-[10px] text-slate-400 font-bold tracking-wider uppercase">Camilla Obstétrica</span>
+                            </div>
+                            <div class="w-36 md:w-48 h-3 bg-slate-950 rounded-b-md border-t border-slate-700"></div>
+                        </div>
+                    </div>
+
+                    <!-- Center: Escritorio + OBSTETRA MARIEL (UNIFORME GUINDA) -->
+                    <div class="relative flex flex-col items-center">
+                        <!-- Obstetra Mariel Avatar -->
+                        <div class="flex flex-col items-center mb-1">
+                            <div class="bg-rose-950/90 text-rose-200 px-2.5 py-0.5 rounded-full text-[10px] font-bold border border-rose-600 shadow-md mb-1">
+                                Obstetra Mariel
+                            </div>
+                            <div class="w-16 h-28 md:w-20 md:h-32 uniform-guinda rounded-t-full border-2 border-rose-500 flex flex-col items-center justify-start pt-2 relative shadow-2xl">
+                                <!-- Face & Hair -->
+                                <div class="w-10 h-10 md:w-12 md:h-12 bg-amber-100 rounded-full border-2 border-amber-800 flex items-center justify-center text-xl shadow">
+                                    👩‍⚕️
+                                </div>
+                                <!-- MINSA badge on Guinda Scrub -->
+                                <div class="mt-2 text-rose-200 text-[9px] font-black tracking-widest uppercase bg-rose-950/80 px-1.5 py-0.5 rounded">MINSA</div>
+                                <div class="absolute bottom-2 text-amber-300 text-xs"><i class="fa-solid fa-stethoscope"></i></div>
+                            </div>
+                        </div>
+
+                        <!-- Desk Graphic -->
+                        <div class="w-32 md:w-44 h-12 bg-amber-950/90 rounded-t-xl border-t-2 border-amber-700 flex items-center justify-center text-amber-200 text-xs font-bold shadow-inner">
+                            <i class="fa-solid fa-laptop-medical mr-1.5 text-rose-400"></i> Historia CLAP
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Patient Avatar Prototype -->
+                    <div class="relative flex flex-col items-center">
+                        <div id="patient-badge-tag" class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full text-[10px] font-bold border border-slate-600 shadow mb-1">
+                            En espera
+                        </div>
+                        <div id="patient-avatar-box" class="w-16 h-28 md:w-20 md:h-32 bg-slate-700 rounded-t-full border-2 border-slate-500 flex flex-col items-center justify-start pt-2 relative shadow-2xl character-avatar">
+                            <!-- Head & Face -->
+                            <div class="w-10 h-10 md:w-12 md:h-12 bg-amber-100 rounded-full border-2 border-slate-900 flex items-center justify-center text-lg">
+                                🤰
+                            </div>
+                            <!-- Pregnant Bump Graphic -->
+                            <div id="patient-bump-graphic" class="mt-2 w-10 h-10 md:w-12 md:h-12 bg-slate-500 rounded-full border border-slate-400 shadow-inner flex items-center justify-center text-[10px] text-slate-950 font-bold">
+                                Gestante
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Stage Floor -->
+                <div class="absolute bottom-0 left-0 right-0 h-4 bg-slate-950 border-t border-slate-800"></div>
+            </div>
+
+            <!-- Clinical Questions & Patient Interaction Panel -->
+            <div class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-5 flex flex-col justify-between flex-grow">
+                
+                <div id="question-area">
+                    <!-- Dynamic Clinical Case Summary Box -->
+                    <div id="patient-info-box" class="bg-slate-950 border-l-4 border-rose-600 p-4 rounded-r-xl mb-4 shadow-inner">
+                        <div class="flex items-center justify-between mb-1">
+                            <h4 id="patient-name-title" class="font-heading font-bold text-rose-300 text-base md:text-lg flex items-center gap-2">
+                                <i class="fa-solid fa-hospital-user text-rose-400"></i> Esperando gestante...
+                            </h4>
+                            <span id="patient-gestation-tag" class="bg-rose-950 text-rose-200 border border-rose-700 text-xs px-3 py-1 rounded-full font-bold">-- Semanas</span>
+                        </div>
+                        <p id="patient-clinical-story" class="text-xs md:text-sm text-slate-300 leading-relaxed">
+                            Presiona el botón <strong>"1. Hacer Pasar"</strong> para llamar a la gestante e iniciar la atención en el consultorio de la Obstetra Mariel.
+                        </p>
+                    </div>
+
+                    <!-- Step Instruction Alert Banner -->
+                    <div id="action-prompt-banner" class="mb-3 bg-amber-950/70 border border-amber-500/50 p-2.5 rounded-xl flex items-center justify-between text-xs text-amber-200">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-hand-holding-medical text-amber-400 text-base"></i>
+                            <strong id="action-prompt-text">Paso Requerido: Haz clic en "1. Hacer Pasar" para atender a la gestante.</strong>
+                        </span>
+                    </div>
+
+                    <!-- Question Title & Level Info -->
+                    <div class="mb-3">
+                        <div class="flex items-center justify-between">
+                            <span id="question-number" class="text-xs font-bold uppercase text-rose-400 tracking-wider">Evaluación Obstétrica MINSA</span>
+                            <span class="bg-slate-800 text-slate-300 text-[10px] px-2.5 py-0.5 rounded font-mono border border-slate-700">Norma Técnica NTS N° 105</span>
+                        </div>
+                        <h3 id="question-text" class="font-heading text-slate-100 font-bold text-sm md:text-base mt-1">
+                            ¿Qué conducta o decisión debe tomar la Obstetra Mariel en este paso?
+                        </h3>
+                    </div>
+
+                    <!-- Options Container -->
+                    <div id="options-container" class="space-y-2.5 opacity-40 pointer-events-none transition-all">
+                        <!-- Dynamic Options generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Explanation Feedback Box -->
+                <div id="feedback-box" class="hidden mt-4 p-4 rounded-xl border transition-all duration-300">
+                    <div class="flex items-start gap-3">
+                        <div id="feedback-icon" class="text-2xl mt-0.5"></div>
+                        <div class="flex-grow">
+                            <h4 id="feedback-title" class="font-heading font-bold text-sm md:text-base"></h4>
+                            <p id="feedback-text" class="text-xs md:text-sm mt-1 leading-relaxed"></p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <button id="next-btn" onclick="nextQuestionFlow()" class="bg-rose-800 hover:bg-rose-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition shadow-lg flex items-center gap-2">
+                            <span>Siguiente Caso / Acción</span> <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-500 text-xs py-3 text-center border-t border-slate-900">
+        <p>Centro de Salud San Antonio Abad • Obstetra Mariel • Simulación Obstétrica Interactiva Educativa</p>
+        <p class="text-[10px] text-slate-600 mt-0.5">Basado en la Norma Técnica de Atención Prenatal Reorientada (MINSA Perú)</p>
+    </footer>
+
+    <!-- MODAL 1: Calculadora Obstétrica (Gestograma e IMC) -->
+<!-- ... existing code ... baseline restart function -->
+        function restartGame() {
+            currentLives = 3;
+            currentScore = 0;
+            currentLevelIndex = 0;
+            currentQuestionIndex = 0;
+
+            updateLivesUI();
+            updateScoreUI();
+            closeModal('end-game-modal');
+            renderLevelMap();
+            setupCurrentPatientState();
+        }
+    </script>
+</body>
+</html>
