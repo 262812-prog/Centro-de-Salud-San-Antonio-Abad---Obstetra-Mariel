@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full bg-slate-950">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,374 +8,1638 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background-color: #0f172a;
-            user-select: none;
-            overflow-x: hidden;
-        }
-        .font-heading {
-            font-family: 'Fredoka', sans-serif;
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1e293b;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #0d9488;
-            border-radius: 10px;
-        }
-
-        /* Consultorio Stage Graphics */
-        .clinic-stage {
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 70%, #020617 100%);
-            perspective: 800px;
-        }
-
-        /* Characters Styles */
-        .character-avatar {
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        /* Guinda Uniform (Obstetra Mariel Signature Color) */
-        .uniform-guinda {
-            background-color: #701a2b;
-            border-color: #9f1239;
-        }
-        .uniform-guinda-light {
-            background-color: #881337;
-        }
-
-        /* Patient Walk Animations */
-        .anim-entering {
-            animation: walkFromDoor 1.6s ease-out forwards;
-        }
-        .anim-sit-desk {
-            animation: sitAtDesk 1s ease-in-out forwards;
-        }
-        .anim-go-bed {
-            animation: walkToBed 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        @keyframes walkFromDoor {
-            0% { transform: translateX(180px) scale(0.85); opacity: 0; }
-            100% { transform: translateX(0px) scale(1); opacity: 1; }
-        }
-        @keyframes sitAtDesk {
-            0% { transform: translateX(0px) translateY(0); }
-            100% { transform: translateX(-40px) translateY(12px) scale(0.95); }
-        }
-        @keyframes walkToBed {
-            0% { transform: translateX(-40px) translateY(12px) scale(0.95); }
-            50% { transform: translateX(-160px) translateY(-5px) scale(0.9); }
-            100% { transform: translateX(-220px) translateY(8px) rotate(-85deg) scale(0.9); }
-        }
-
-        /* Interactive Pulsing Tool Glow */
-        .pulse-tool-btn {
-            animation: pulseTool 1.6s infinite;
-        }
-        @keyframes pulseTool {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8); }
-            50% { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
-        }
-
-        /* Dialogue Arrow */
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            right: 25px;
-            border-width: 8px 8px 0;
-            border-style: solid;
-            border-color: #ffffff transparent;
-            display: block;
-            width: 0;
-        }
+        body { font-family: 'Quicksand', sans-serif; background-color: #080c14; }
+        .font-heading { font-family: 'Fredoka', sans-serif; }
+        .walk-anim { transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .pulse-subtle { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .7; } }
     </style>
 </head>
-<body class="bg-slate-950 min-h-screen text-slate-100 flex flex-col justify-between">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-rose-500 selection:text-white">
 
-    <!-- Top Header Navigation -->
-    <header class="bg-slate-900/90 backdrop-blur-md text-white shadow-xl sticky top-0 z-30 border-b border-rose-900/40">
-        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap justify-between items-center">
-            
-            <!-- Logo & Obstetra Mariel Header Title -->
+    <header class="bg-slate-900 border-b border-slate-800 px-6 py-3 sticky top-0 z-50 shadow-2xl">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Title & Institution -->
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-rose-900 rounded-full flex items-center justify-center text-rose-200 border-2 border-rose-500 shadow-md">
-                    <i class="fa-solid fa-user-nurse text-lg"></i>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-700 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-rose-900/40">
+                    <i class="fa-solid fa-hospital-user text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-heading text-base md:text-xl font-bold tracking-wide flex items-center gap-2 text-rose-200">
-                        <span>Centro de Salud San Antonio Abad</span>
+                    <h1 class="font-heading text-lg font-bold text-rose-100 tracking-wide flex items-center gap-2">
+                        Centro de Salud San Antonio Abad
                     </h1>
-                    <p class="text-xs text-rose-300/80 flex items-center gap-1">
-                        <i class="fa-solid fa-user-doctor text-amber-400"></i> Obstetra Mariel
-                    </p>
+                    <p class="text-xs text-rose-300/80 font-medium">Consultorio Obstétrico • Obstetra Mariel</p>
                 </div>
             </div>
 
-            <!-- Game Status Indicators: Lives, Points, Level -->
-            <div id="game-status" class="flex items-center gap-3 mt-2 sm:mt-0 bg-slate-950 px-4 py-1.5 rounded-full border border-rose-800/50">
-                <!-- Vidas / Heart Icons -->
-                <div class="flex items-center gap-1">
-                    <span class="text-xs text-slate-300 font-semibold mr-1">Vidas:</span>
-                    <div id="lives-container" class="flex text-rose-500 text-base">
-                        <i class="fa-solid fa-heart"></i>
+            <!-- Level & Score Stats -->
+            <div class="flex items-center gap-6">
+                <!-- Level Indicator -->
+                <div class="text-right">
+                    <span id="levelBadge" class="text-[11px] uppercase tracking-wider text-amber-400 font-bold block">NIVEL 1 DE 10</span>
+                    <span id="patientLevelTitle" class="text-xs text-slate-300 font-semibold">Atención: Amira</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-36 bg-slate-950 rounded-full h-2.5 border border-slate-800 overflow-hidden shadow-inner">
+                    <div id="progressBar" class="bg-gradient-to-r from-rose-600 via-amber-500 to-emerald-400 h-full w-[10%] transition-all duration-500"></div>
+                </div>
+
+                <!-- Question Counter Badge for Current Patient -->
+                <div class="bg-slate-950 border border-slate-800 px-3 py-1.5 rounded-xl text-center shadow-md">
+                    <span class="text-[10px] text-slate-400 block font-bold uppercase tracking-wider">Pregunta</span>
+                    <span id="questionCounterBadge" class="text-rose-300 font-bold text-xs font-mono">1 de 7</span>
+                </div>
+
+                <!-- Lives Container -->
+                <div class="flex items-center gap-2 bg-slate-950 px-3.5 py-1.5 rounded-xl border border-slate-800 shadow-md">
+                    <span class="text-[11px] text-slate-400 font-bold uppercase mr-1">Vidas:</span>
+                    <div id="livesContainer" class="flex gap-1 text-rose-500 text-sm">
+                        <i class="fa-solid fa-heart animate-bounce"></i>
                         <i class="fa-solid fa-heart"></i>
                         <i class="fa-solid fa-heart"></i>
                     </div>
                 </div>
 
-                <!-- Puntaje / Score -->
-                <div class="flex items-center gap-1 border-l border-slate-800 pl-3">
-                    <i class="fa-solid fa-star text-amber-400"></i>
-                    <span class="text-xs text-slate-300 font-semibold">Puntos:</span>
-                    <span id="score-text" class="font-bold text-yellow-400 text-base">0</span>
-                </div>
-
-                <!-- Paciente actual badge -->
-                <div class="flex items-center gap-1 border-l border-slate-800 pl-3">
-                    <span id="level-badge" class="bg-rose-900 text-rose-100 text-xs font-bold px-2.5 py-0.5 rounded-full border border-rose-600">Paciente 1/10</span>
+                <!-- Score -->
+                <div class="bg-amber-950/50 border border-amber-800/80 px-4 py-1.5 rounded-xl text-center shadow-md">
+                    <span class="text-[10px] text-amber-300 block font-bold uppercase tracking-wider">Puntuación</span>
+                    <span id="scoreText" class="text-amber-400 font-bold text-sm font-mono tracking-wider">0 PTS</span>
                 </div>
             </div>
-        </div>
-
-        <!-- Overall Progress Bar -->
-        <div class="w-full bg-slate-950 h-1.5">
-            <div id="main-progress-bar" class="bg-gradient-to-r from-rose-700 via-amber-500 to-emerald-400 h-1.5 transition-all duration-500" style="width: 10%;"></div>
         </div>
     </header>
 
-    <!-- Main Content Grid -->
-    <main class="max-w-7xl mx-auto w-full p-2 md:p-4 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-4">
+    <main class="max-w-7xl mx-auto w-full p-6 grid grid-cols-12 gap-6 flex-1 items-start">
 
-        <!-- Left Sidebar: Patient Queue & Clinical Medical Tools -->
-        <aside class="lg:col-span-3 flex flex-col gap-4 order-2 lg:order-1">
-            
-            <!-- Patient Queue Panel -->
-            <div class="bg-slate-900 rounded-2xl shadow-md border border-slate-800 p-4">
-                <h3 class="font-heading font-bold text-rose-200 mb-3 flex items-center justify-between text-xs md:text-sm">
-                    <span><i class="fa-solid fa-users text-rose-400 mr-2"></i>Sala de Espera del C.S.</span>
-                    <span class="text-[10px] font-normal text-slate-400">10 Gestantes</span>
-                </h3>
-                <div id="levels-list" class="space-y-1.5 max-h-48 lg:max-h-64 overflow-y-auto pr-1">
-                    <!-- Dynamic level list inserted here -->
-                </div>
-            </div>
+        <!-- LEFT COLUMN (Col 7): Interactive Medical Stage & Tools -->
+        <div class="col-span-12 lg:col-span-7 flex flex-col gap-5">
 
-            <!-- Medical Interactive Equipment Tools -->
-            <div class="bg-slate-900 rounded-2xl shadow-md border border-slate-800 p-4">
-                <h3 class="font-heading font-bold text-slate-200 mb-3 flex items-center text-xs md:text-sm text-rose-300">
-                    <i class="fa-solid fa-toolbox mr-2 text-rose-400"></i> Herramientas de Evaluación
-                </h3>
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="openModal('calculator-modal')" class="bg-slate-800 hover:bg-rose-950/60 text-slate-200 p-2.5 rounded-xl border border-slate-700 hover:border-rose-500 text-xs font-bold flex flex-col items-center text-center transition">
-                        <i class="fa-solid fa-calculator text-base text-rose-400 mb-1"></i>
-                        <span>Gestograma e IMC</span>
-                    </button>
-                    <button onclick="openModal('hc-modal')" class="bg-slate-800 hover:bg-sky-950/60 text-slate-200 p-2.5 rounded-xl border border-slate-700 hover:border-sky-500 text-xs font-bold flex flex-col items-center text-center transition">
-                        <i class="fa-solid fa-file-medical text-base text-sky-400 mb-1"></i>
-                        <span>Historia CLAP</span>
-                    </button>
-                    <button onclick="openModal('vitals-modal')" class="bg-slate-800 hover:bg-emerald-950/60 text-slate-200 p-2.5 rounded-xl border border-slate-700 hover:border-emerald-500 text-xs font-bold flex flex-col items-center text-center transition col-span-2">
-                        <i class="fa-solid fa-book-medical text-base text-emerald-400 mb-1"></i>
-                        <span>Parámetros Obstétricos MINSA</span>
-                    </button>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Center & Right Screen: Consultation Room & Decision Engine -->
-        <section class="lg:col-span-9 flex flex-col gap-4 order-1 lg:order-2">
-            
-            <!-- CONSULTORIO VISUAL INTERACTIVE STAGE -->
-            <div class="clinic-stage rounded-2xl p-4 shadow-2xl border border-slate-800 relative overflow-hidden min-h-[320px] flex flex-col justify-between">
-                
-                <!-- Stage Header Overlay -->
-                <div class="flex justify-between items-center z-10">
-                    <!-- Location Status -->
-                    <div class="bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-xl shadow border border-rose-900/50 flex items-center gap-2.5">
-                        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></div>
-                        <div>
-                            <p class="text-xs font-bold text-rose-200" id="stage-location-text">Paso 1: Llamar a la gestante a la puerta</p>
-                            <p class="text-[10px] text-slate-400" id="stage-patient-sub">Centro de Salud San Antonio Abad</p>
-                        </div>
+            <!-- Interactive Consultorio Stage -->
+            <section class="bg-slate-900 rounded-2xl border border-slate-800 p-4 shadow-xl relative overflow-hidden">
+                <!-- Stage Header -->
+                <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-200">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span>Consultorio N° 3 • Vista Principal Equipada</span>
                     </div>
-
-                    <!-- Interactive Location Controls (Puerta, Escritorio, Camilla) -->
-                    <div id="interactive-nav-controls" class="flex gap-2">
-                        <button id="btn-call-patient" onclick="triggerPatientEntrance()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow pulse-tool-btn transition">
-                            <i class="fa-solid fa-door-open"></i> <span>1. Hacer Pasar</span>
-                        </button>
-                        <button id="btn-sit-desk" onclick="movePatientToLocation('desk')" class="bg-slate-800 opacity-50 cursor-not-allowed text-slate-300 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-700 flex items-center gap-1.5 transition" disabled>
-                            <i class="fa-solid fa-chair text-rose-400"></i> <span>2. Tomar Asiento</span>
-                        </button>
-                        <button id="btn-go-bed" onclick="movePatientToLocation('bed')" class="bg-slate-800 opacity-50 cursor-not-allowed text-amber-300 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-700 flex items-center gap-1.5 transition" disabled>
-                            <i class="fa-solid fa-bed-pulse text-amber-400"></i> <span>3. Ir a Camilla</span>
-                        </button>
-                    </div>
+                    <span id="patientStatusBadge" class="bg-amber-950 text-amber-300 border border-amber-800 px-3 py-1 rounded-full text-xs font-semibold">
+                        <i class="fa-solid fa-door-closed mr-1"></i> Esperando en Puerta
+                    </span>
                 </div>
 
-                <!-- Patient Speech Bubble Dialogue Area -->
-                <div id="speech-bubble" class="hidden absolute top-14 right-12 md:right-28 bg-white text-slate-900 p-3 rounded-2xl shadow-2xl max-w-xs md:max-w-sm z-30 speech-bubble text-xs md:text-sm font-bold border-2 border-rose-800 animate-bounce">
-                    <p id="speech-text">"¡Buenas tardes, Obstetra Mariel!"</p>
-                </div>
+                <!-- Clinic Graphic Workspace Decorated & Fully Equipped -->
+                <div class="relative bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 rounded-xl h-72 border border-slate-800/90 p-4 flex items-end justify-between overflow-hidden shadow-inner">
+                    <!-- Background Grid & Clinic Walls Decor -->
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+                    <div class="absolute top-2 left-4 text-[10px] text-slate-500 uppercase font-mono tracking-widest flex items-center gap-2">
+                        <span>MINSA • Centro de Salud San Antonio Abad</span>
+                    </div>
 
-                <!-- CLINIC SCENE GRAPHICS: CAMILLA, ESCRITORIO, OBSTETRA MARIEL (GUINDA) & GESTANTE -->
-                <div class="relative w-full h-56 mt-2 flex items-end justify-between px-2 md:px-8 z-10">
-                    
-                    <!-- Left: Camilla de Exploración Obstétrica + Equipos -->
-                    <div class="relative flex flex-col items-center">
-                        <div id="bed-interactive-zone" onclick="interactWithBedTools()" class="cursor-pointer group relative">
-                            <!-- Tools overlay floating over bed -->
-                            <div id="bed-tools-overlay" class="hidden absolute -top-10 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-                                <button title="Medir Altura Uterina" class="bg-amber-500 text-slate-950 p-2 rounded-full text-xs shadow-lg pulse-tool-btn"><i class="fa-solid fa-ruler-vertical"></i></button>
-                                <button title="Auscultar FCF con Doppler" class="bg-sky-500 text-slate-950 p-2 rounded-full text-xs shadow-lg pulse-tool-btn"><i class="fa-solid fa-heart-pulse"></i></button>
-                                <button title="Control de Presión Arterial" class="bg-rose-500 text-white p-2 rounded-full text-xs shadow-lg pulse-tool-btn"><i class="fa-solid fa-stethoscope"></i></button>
-                            </div>
-                            <!-- Bed Graphic -->
-                            <div class="w-32 md:w-44 h-16 bg-slate-800 rounded-t-2xl border-2 border-slate-600 flex items-center justify-center relative shadow-2xl">
-                                <div class="w-8 h-12 bg-rose-950/40 rounded-lg absolute left-2 top-2 border border-rose-800/40"></div>
-                                <span class="text-[10px] text-slate-400 font-bold tracking-wider uppercase">Camilla Obstétrica</span>
-                            </div>
-                            <div class="w-36 md:w-48 h-3 bg-slate-950 rounded-b-md border-t border-slate-700"></div>
+                    <!-- CLINIC DECORATIONS & EQUIPMENT -->
+                    <div class="absolute top-6 left-20 bg-slate-800/90 border border-amber-500/40 rounded p-1 text-[8px] text-amber-300 flex items-center gap-1 shadow z-0">
+                        <i class="fa-solid fa-ribbon text-rose-400"></i>
+                        <span>AFICHE MINSA: CONTROL PRENATAL</span>
+                    </div>
+                    <div class="absolute top-6 left-60 bg-slate-800/90 border border-rose-500/40 rounded p-1 text-[8px] text-rose-300 flex items-center gap-1 shadow z-0">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                        <span>SIGNOS DE ALARMA EN LA GESTANTE</span>
+                    </div>
+                    <div class="absolute top-6 left-[27rem] bg-slate-800/90 border border-emerald-500/40 rounded p-1 text-[8px] text-emerald-300 flex items-center gap-1 shadow z-0">
+                        <i class="fa-solid fa-baby text-emerald-400"></i>
+                        <span>LACTANCIA MATERNA EXCLUSIVA</span>
+                    </div>
+
+                    <!-- Lavamanos & Bioseguridad -->
+                    <div class="absolute bottom-2 left-20 flex flex-col items-center opacity-85 z-0 pointer-events-none">
+                        <div class="flex gap-1 text-[9px] text-cyan-400 mb-0.5">
+                            <i class="fa-solid fa-pump-soap" title="Jabón antiséptico"></i>
+                            <i class="fa-solid fa-hands-bubbles" title="Lavado de manos"></i>
+                        </div>
+                        <div class="w-8 h-8 bg-slate-800 border border-cyan-500/40 rounded-b-lg flex items-center justify-center text-cyan-300 text-xs shadow">
+                            <i class="fa-solid fa-sink"></i>
                         </div>
                     </div>
 
-                    <!-- Center: Escritorio + OBSTETRA MARIEL (UNIFORME GUINDA) -->
-                    <div class="relative flex flex-col items-center">
-                        <!-- Obstetra Mariel Avatar -->
-                        <div class="flex flex-col items-center mb-1">
-                            <div class="bg-rose-950/90 text-rose-200 px-2.5 py-0.5 rounded-full text-[10px] font-bold border border-rose-600 shadow-md mb-1">
-                                Obstetra Mariel
-                            </div>
-                            <div class="w-16 h-28 md:w-20 md:h-32 uniform-guinda rounded-t-full border-2 border-rose-500 flex flex-col items-center justify-start pt-2 relative shadow-2xl">
-                                <!-- Face & Hair -->
-                                <div class="w-10 h-10 md:w-12 md:h-12 bg-amber-100 rounded-full border-2 border-amber-800 flex items-center justify-center text-xl shadow">
-                                    👩‍⚕️
-                                </div>
-                                <!-- MINSA badge on Guinda Scrub -->
-                                <div class="mt-2 text-rose-200 text-[9px] font-black tracking-widest uppercase bg-rose-950/80 px-1.5 py-0.5 rounded">MINSA</div>
-                                <div class="absolute bottom-2 text-amber-300 text-xs"><i class="fa-solid fa-stethoscope"></i></div>
-                            </div>
-                        </div>
+                    <!-- Decorative Plant -->
+                    <div class="absolute bottom-2 left-32 text-emerald-600 text-xl flex flex-col items-center opacity-80 pointer-events-none">
+                        <i class="fa-solid fa-plant-wilt"></i>
+                        <div class="w-3.5 h-2.5 bg-amber-900 rounded-b-md border border-amber-700"></div>
+                    </div>
 
-                        <!-- Desk Graphic -->
-                        <div class="w-32 md:w-44 h-12 bg-amber-950/90 rounded-t-xl border-t-2 border-amber-700 flex items-center justify-center text-amber-200 text-xs font-bold shadow-inner">
-                            <i class="fa-solid fa-laptop-medical mr-1.5 text-rose-400"></i> Historia CLAP
+                    <!-- Biombo -->
+                    <div class="absolute bottom-2 right-48 opacity-75 pointer-events-none flex gap-0.5">
+                        <div class="w-4 h-24 bg-slate-800/90 border border-slate-700 rounded-t flex items-center justify-center">
+                            <div class="w-2 h-16 bg-slate-900/60 rounded border border-slate-700/50"></div>
+                        </div>
+                        <div class="w-4 h-24 bg-slate-800/90 border border-slate-700 rounded-t flex items-center justify-center">
+                            <div class="w-2 h-16 bg-slate-900/60 rounded border border-slate-700/50"></div>
                         </div>
                     </div>
 
-                    <!-- Right Side: Patient Avatar Prototype -->
-                    <div class="relative flex flex-col items-center">
-                        <div id="patient-badge-tag" class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded-full text-[10px] font-bold border border-slate-600 shadow mb-1">
-                            En espera
-                        </div>
-                        <div id="patient-avatar-box" class="w-16 h-28 md:w-20 md:h-32 bg-slate-700 rounded-t-full border-2 border-slate-500 flex flex-col items-center justify-start pt-2 relative shadow-2xl character-avatar">
-                            <!-- Head & Face -->
-                            <div class="w-10 h-10 md:w-12 md:h-12 bg-amber-100 rounded-full border-2 border-slate-900 flex items-center justify-center text-lg">
-                                🤰
-                            </div>
-                            <!-- Pregnant Bump Graphic -->
-                            <div id="patient-bump-graphic" class="mt-2 w-10 h-10 md:w-12 md:h-12 bg-slate-500 rounded-full border border-slate-400 shadow-inner flex items-center justify-center text-[10px] text-slate-950 font-bold">
-                                Gestante
-                            </div>
+                    <!-- DOOR ZONE (Left) -->
+                    <div id="doorZone" class="relative z-10 flex flex-col items-center">
+                        <div class="w-16 h-44 border-2 border-dashed border-rose-900/60 rounded-t-xl bg-slate-900/90 flex flex-col items-center justify-center text-slate-500 text-xs shadow-md">
+                            <i class="fa-solid fa-door-open text-2xl mb-2 text-amber-500/70"></i>
+                            <span class="font-semibold text-[10px] text-slate-400">PUERTA</span>
                         </div>
                     </div>
 
-                </div>
-
-                <!-- Stage Floor -->
-                <div class="absolute bottom-0 left-0 right-0 h-4 bg-slate-950 border-t border-slate-800"></div>
-            </div>
-
-            <!-- Clinical Questions & Patient Interaction Panel -->
-            <div class="bg-slate-900 rounded-2xl shadow-xl border border-slate-800 p-5 flex flex-col justify-between flex-grow">
-                
-                <div id="question-area">
-                    <!-- Dynamic Clinical Case Summary Box -->
-                    <div id="patient-info-box" class="bg-slate-950 border-l-4 border-rose-600 p-4 rounded-r-xl mb-4 shadow-inner">
-                        <div class="flex items-center justify-between mb-1">
-                            <h4 id="patient-name-title" class="font-heading font-bold text-rose-300 text-base md:text-lg flex items-center gap-2">
-                                <i class="fa-solid fa-hospital-user text-rose-400"></i> Esperando gestante...
-                            </h4>
-                            <span id="patient-gestation-tag" class="bg-rose-950 text-rose-200 border border-rose-700 text-xs px-3 py-1 rounded-full font-bold">-- Semanas</span>
+                    <!-- DYNAMIC PATIENT AVATAR -->
+                    <div id="patientAvatar" class="absolute z-20 bottom-4 left-6 walk-anim flex flex-col items-center opacity-40 scale-90">
+                        <!-- SPEECH BUBBLE OVER AVATAR -->
+                        <div id="patientSpeechBubble" class="hidden absolute -top-24 bg-rose-950/95 text-rose-100 text-[11px] px-3.5 py-2 rounded-xl border border-rose-500 shadow-2xl max-w-[240px] text-center font-semibold z-30 animate-bounce leading-tight">
+                            <span id="speechBubbleText">¡Hola, Obstetra!</span>
+                            <!-- Speech Bubble Tail -->
+                            <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-rose-500"></div>
                         </div>
-                        <p id="patient-clinical-story" class="text-xs md:text-sm text-slate-300 leading-relaxed">
-                            Presiona el botón <strong>"1. Hacer Pasar"</strong> para llamar a la gestante e iniciar la atención en el consultorio de la Obstetra Mariel.
-                        </p>
-                    </div>
 
-                    <!-- Step Instruction Alert Banner -->
-                    <div id="action-prompt-banner" class="mb-3 bg-amber-950/70 border border-amber-500/50 p-2.5 rounded-xl flex items-center justify-between text-xs text-amber-200">
-                        <span class="flex items-center gap-2">
-                            <i class="fa-solid fa-hand-holding-medical text-amber-400 text-base"></i>
-                            <strong id="action-prompt-text">Paso Requerido: Haz clic en "1. Hacer Pasar" para atender a la gestante.</strong>
+                        <div class="w-12 h-12 rounded-full bg-rose-500/20 border-2 border-rose-400 flex items-center justify-center text-rose-200 text-xl shadow-xl backdrop-blur">
+                            <i class="fa-solid fa-person-pregnant"></i>
+                        </div>
+                        <span id="patientAvatarName" class="text-[10px] bg-slate-900/95 text-rose-200 px-2 py-0.5 rounded-full border border-rose-800 mt-1 font-bold shadow-md">
+                            Amira
                         </span>
                     </div>
 
-                    <!-- Question Title & Level Info -->
-                    <div class="mb-3">
-                        <div class="flex items-center justify-between">
-                            <span id="question-number" class="text-xs font-bold uppercase text-rose-400 tracking-wider">Evaluación Obstétrica MINSA</span>
-                            <span class="bg-slate-800 text-slate-300 text-[10px] px-2.5 py-0.5 rounded font-mono border border-slate-700">Norma Técnica NTS N° 105</span>
+                    <!-- OBSTETRA MARIEL DESK ZONE (Center) -->
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="flex items-center gap-2 text-amber-400/90 text-xs mb-1 bg-slate-950 px-2.5 py-1 rounded border border-slate-800 shadow">
+                            <i class="fa-solid fa-laptop-medical" title="Historia Clínica / Sistema CLAP"></i>
+                            <i class="fa-solid fa-compact-disc text-rose-400" title="Gestómetro / Disco Gestacional"></i>
+                            <i class="fa-solid fa-walkie-talkie text-cyan-400" title="Doppler Fetal Portátil"></i>
+                            <i class="fa-solid fa-prescription-bottle-medical text-emerald-400" title="Suplementos de Hierro y Calcio"></i>
                         </div>
-                        <h3 id="question-text" class="font-heading text-slate-100 font-bold text-sm md:text-base mt-1">
-                            ¿Qué conducta o decisión debe tomar la Obstetra Mariel en este paso?
-                        </h3>
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-rose-950 border-2 border-rose-500 flex items-center justify-center text-rose-100 text-xl shadow-2xl mb-1 group relative cursor-pointer">
+                                <i class="fa-solid fa-user-doctor text-rose-200"></i>
+                                <span class="absolute -top-7 bg-rose-900 text-rose-100 text-[9px] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition">MINSA</span>
+                            </div>
+                            <div class="w-7 h-9 border border-amber-800/60 bg-amber-950/40 rounded flex flex-col items-center justify-center text-[10px] text-amber-400/70" title="Silla del Acompañante / Pareja">
+                                <i class="fa-solid fa-chair text-xs"></i>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900 border border-rose-800/80 px-3 py-1.5 rounded-xl text-center text-xs text-rose-200 font-bold shadow-lg">
+                            <i class="fa-solid fa-stethoscope text-amber-400 mr-1"></i> Escritorio Mariel
+                        </div>
                     </div>
 
-                    <!-- Options Container -->
-                    <div id="options-container" class="space-y-2.5 opacity-40 pointer-events-none transition-all">
-                        <!-- Dynamic Options generated by JS -->
+                    <!-- EXAMINATION BED & DIAGNOSTIC EQUIPMENT ZONE (Right) -->
+                    <div id="bedZone" class="relative z-10 flex flex-col items-center">
+                        <div class="text-slate-400 text-xs mb-1 flex items-center gap-2 bg-slate-950/80 px-2 py-0.5 rounded border border-slate-800 shadow">
+                            <i class="fa-solid fa-heart-pulse text-rose-400" title="Tensiómetro Aneroide de Pared"></i>
+                            <i class="fa-solid fa-desktop text-indigo-400" title="Ecógrafo Portátil Obstétrico"></i>
+                            <i class="fa-solid fa-lightbulb text-amber-300" title="Lámpara Cuello de Cisne"></i>
+                            <i class="fa-solid fa-trash-can text-rose-500" title="Tacho Rojo Biocontaminado"></i>
+                            <i class="fa-solid fa-box text-amber-500" title="Caja de Bioseguridad Punzocortantes"></i>
+                        </div>
+                        <div class="flex items-end gap-1">
+                            <div class="w-4 h-8 bg-slate-800 border border-slate-700 rounded-l flex flex-col justify-end p-0.5" title="Gradilla de 2 Pasos">
+                                <div class="w-full h-2 bg-slate-700 rounded-sm mb-1"></div>
+                                <div class="w-full h-2 bg-slate-600 rounded-sm"></div>
+                            </div>
+                            <div class="w-24 h-20 border border-slate-700 bg-slate-900/90 rounded-r-xl flex flex-col items-center justify-center text-slate-400 text-xs gap-1 shadow-md relative overflow-hidden">
+                                <div class="absolute inset-x-2 top-2 h-2 bg-slate-200/20 rounded"></div>
+                                <div class="flex gap-2 text-amber-400 mt-2">
+                                    <i class="fa-solid fa-bed-pulse"></i>
+                                    <i class="fa-solid fa-weight-scale text-emerald-400" title="Balanza e Infantómetro"></i>
+                                </div>
+                                <span class="text-[10px] font-semibold text-slate-300">Camilla / Balanza</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Explanation Feedback Box -->
-                <div id="feedback-box" class="hidden mt-4 p-4 rounded-xl border transition-all duration-300">
-                    <div class="flex items-start gap-3">
-                        <div id="feedback-icon" class="text-2xl mt-0.5"></div>
-                        <div class="flex-grow">
-                            <h4 id="feedback-title" class="font-heading font-bold text-sm md:text-base"></h4>
-                            <p id="feedback-text" class="text-xs md:text-sm mt-1 leading-relaxed"></p>
-                        </div>
-                    </div>
-                    <div class="mt-4 flex justify-end">
-                        <button id="next-btn" onclick="nextQuestionFlow()" class="bg-rose-800 hover:bg-rose-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition shadow-lg flex items-center gap-2">
-                            <span>Siguiente Caso / Acción</span> <i class="fa-solid fa-arrow-right"></i>
+                <!-- ACTION BUTTONS: STEP BY STEP PATIENT FLOW -->
+                <div class="mt-4 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <p class="text-[11px] text-slate-400 font-bold mb-2 uppercase tracking-wider flex items-center gap-1">
+                        <i class="fa-solid fa-shoe-prints text-amber-400"></i> Control de Desplazamiento e Interacción:
+                    </p>
+                    <div id="actionControls" class="grid grid-cols-3 gap-3">
+                        <!-- Step 1: Call Patient -->
+                        <button id="btnCallPatient" onclick="handleMoveAction('door')" class="bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all border border-amber-400 pulse-subtle">
+                            <i class="fa-solid fa-door-open text-base"></i> 1. Hacer Pasar
+                        </button>
+                        <!-- Step 2: Desk Interview -->
+                        <button id="btnDesk" onclick="handleMoveAction('desk')" disabled class="bg-slate-800 text-slate-500 font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all border border-transparent">
+                            <i class="fa-solid fa-chair text-base"></i> 2. Sentarse al Escritorio
+                        </button>
+                        <!-- Step 3: Exam Bed -->
+                        <button id="btnBed" onclick="handleMoveAction('bed')" disabled class="bg-slate-800 text-slate-500 font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all border border-transparent">
+                            <i class="fa-solid fa-bed-pulse text-base"></i> 3. Pasar a Camilla
                         </button>
                     </div>
                 </div>
+            </section>
 
-            </div>
-        </section>
+            <!-- Quick Clinical Tools / Calculators Tab -->
+            <section class="bg-slate-900 rounded-2xl border border-slate-800 p-4 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+                    <h3 class="font-heading text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-toolbox text-amber-400"></i> Herramientas Clínicas & Gestograma
+                    </h3>
+                    <div class="flex gap-1 text-[10px]">
+                        <button onclick="switchToolTab('calc')" id="tabBtnCalc" class="px-2 py-1 rounded bg-rose-900/80 text-rose-200 font-bold border border-rose-700">Calculadoras</button>
+                        <button onclick="switchToolTab('gestogram')" id="tabBtnGesto" class="px-2 py-1 rounded bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800">Gestograma</button>
+                        <button onclick="switchToolTab('alarms')" id="tabBtnAlarms" class="px-2 py-1 rounded bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800">Signos Alarma</button>
+                    </div>
+                </div>
+
+                <!-- TAB 1: Calculadoras IMC y Naegele -->
+                <div id="toolPanelCalc" class="grid grid-cols-2 gap-3 text-xs">
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-rose-300">Cálculo de IMC:</span>
+                            <span id="bmiCategoryBadge" class="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">--</span>
+                        </div>
+                        <div class="flex gap-2 mb-2">
+                            <input type="number" id="calcWeight" placeholder="Peso (kg)" class="w-1/2 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200 text-xs">
+                            <input type="number" id="calcHeight" placeholder="Talla (m)" step="0.01" class="w-1/2 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200 text-xs">
+                        </div>
+                        <button onclick="calculateBMI()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 py-1 rounded text-[11px] font-bold border border-slate-700">Calcular IMC</button>
+                        <p id="bmiResult" class="text-[10px] text-slate-400 mt-1 font-mono text-center">IMC: --</p>
+                    </div>
+
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                        <span class="font-bold text-rose-300 block mb-1">Regla de Naegele (FPP):</span>
+                        <input type="date" id="calcFUM" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-slate-200 text-xs mb-2">
+                        <button onclick="calculateFPP()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-300 py-1 rounded text-[11px] font-bold border border-slate-700">Estimación FPP</button>
+                        <p id="fppResult" class="text-[10px] text-slate-400 mt-1 font-mono text-center">FPP: --</p>
+                    </div>
+                </div>
+
+                <!-- TAB 2: Disco Gestacional Completo -->
+                <div id="toolPanelGestogram" class="hidden bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-bold text-amber-400 text-xs"><i class="fa-solid fa-compact-disc text-rose-400 mr-1"></i> Disco Gestacional Interactivo</span>
+                        <button onclick="playDopplerSound()" class="bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 text-[10px] px-2 py-0.5 rounded font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-heart-pulse text-rose-400"></i> Doppler Fetal
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center text-[10px]">
+                        <div class="bg-slate-900 p-2 rounded border border-slate-800">
+                            <span class="text-slate-400 block font-bold">EG Estimada</span>
+                            <span id="gestoEG" class="text-rose-300 font-bold text-xs font-mono">-- sem</span>
+                        </div>
+                        <div class="bg-slate-900 p-2 rounded border border-slate-800">
+                            <span class="text-slate-400 block font-bold">Peso Fetal</span>
+                            <span id="gestoPeso" class="text-amber-300 font-bold text-xs font-mono">-- g</span>
+                        </div>
+                        <div class="bg-slate-900 p-2 rounded border border-slate-800">
+                            <span class="text-slate-400 block font-bold">Alt. Uterina</span>
+                            <span id="gestoAU" class="text-emerald-300 font-bold text-xs font-mono">-- cm</span>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-2 italic text-center">Calculado dinámicamente según la Fecha de Última Menstruación ingresada.</p>
+                </div>
+
+                <!-- TAB 3: Signos de Alarma Rápidos MINSA -->
+                <div id="toolPanelAlarms" class="hidden bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs">
+                    <span class="font-bold text-rose-400 block mb-2 text-center text-[11px]">Guía de Referencia Rápida: Signos de Alarma</span>
+                    <div class="grid grid-cols-2 gap-2 text-[10px]">
+                        <div class="bg-rose-950/40 border border-rose-900/60 p-2 rounded text-rose-200">
+                            <strong class="block text-rose-400 mb-0.5"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Preeclampsia:</strong>
+                            Cefalea intensa, fosfenos (luces), acúfenos (zumbidos), dolor epigástrico en barra.
+                        </div>
+                        <div class="bg-amber-950/40 border border-amber-900/60 p-2 rounded text-amber-200">
+                            <strong class="block text-amber-400 mb-0.5"><i class="fa-solid fa-droplet mr-1"></i>Hemorragia:</strong>
+                            Sangrado vaginal activo rojo rutilante u oscuro con/sin dolor.
+                        </div>
+                        <div class="bg-cyan-950/40 border border-cyan-900/60 p-2 rounded text-cyan-200">
+                            <strong class="block text-cyan-400 mb-0.5"><i class="fa-solid fa-water mr-1"></i>RPM:</strong>
+                            Pérdida ininterrumpida de líquido claro con olor a lejía por vagina.
+                        </div>
+                        <div class="bg-emerald-950/40 border border-emerald-900/60 p-2 rounded text-emerald-200">
+                            <strong class="block text-emerald-400 mb-0.5"><i class="fa-solid fa-child mr-1"></i>Movimientos:</strong>
+                            Disminución franca o ausencia repentina de pataditas fetales.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- RIGHT COLUMN (Col 5): Case Details, Questions, Feedback -->
+        <div class="col-span-12 lg:col-span-5 flex flex-col gap-5">
+
+            <!-- Case Card & Dynamic Question Panel -->
+            <section class="bg-slate-900 rounded-2xl border border-slate-800 p-5 shadow-xl flex flex-col justify-between min-h-[500px]">
+                
+                <div>
+                    <!-- Patient Profile Header -->
+                    <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 mb-4 flex items-center justify-between">
+                        <div>
+                            <span id="caseBadgeText" class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block">CLAP • Historia Clínica</span>
+                            <h2 id="patientNameHeader" class="font-heading text-base font-bold text-rose-200">Paciente: Amira (22 años)</h2>
+                        </div>
+                        <div class="w-8 h-8 rounded-lg bg-rose-900/50 border border-rose-700 flex items-center justify-center text-rose-300">
+                            <i class="fa-solid fa-clipboard-user"></i>
+                        </div>
+                    </div>
+
+                    <!-- Patient Dialogue / Case Text -->
+                    <div id="caseSpeechBox" class="bg-slate-950/80 p-4 rounded-xl border border-slate-800 mb-4 text-xs leading-relaxed text-slate-300 relative">
+                        <i class="fa-solid fa-quote-left text-slate-700 text-xl absolute top-2 right-3"></i>
+                        <p id="patientDialogueText">
+                            Presiona el botón <strong class="text-amber-400">"1. Hacer Pasar"</strong> para llamar a la paciente al consultorio e iniciar la atención de este nivel.
+                        </p>
+                    </div>
+
+                    <!-- Question Box -->
+                    <div id="questionContainer" class="hidden">
+                        <div class="bg-amber-950/30 border border-amber-800/60 p-3.5 rounded-xl mb-4">
+                            <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-1">Pregunta Clínica:</span>
+                            <p id="questionText" class="text-xs font-bold text-slate-100 leading-snug">--</p>
+                        </div>
+
+                        <!-- Options List -->
+                        <div id="optionsGrid" class="space-y-2.5 mb-4"></div>
+                    </div>
+
+                    <!-- Feedback Box -->
+                    <div id="feedbackBox" class="hidden bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs mb-4">
+                        <div id="feedbackHeader" class="font-bold flex items-center gap-2 mb-1.5 text-xs"></div>
+                        <p id="feedbackText" class="text-slate-300 leading-relaxed text-[11px]"></p>
+                    </div>
+                </div>
+
+                <!-- Action / Next Step Button -->
+                <div>
+                    <button id="btnNextAction" onclick="advanceStepOrPatient()" class="hidden w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl text-xs transition border border-emerald-400 shadow-xl flex items-center justify-center gap-2">
+                        <span>Siguiente Paso / Atender Siguiente Paciente</span> <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+            </section>
+
+        </div>
+
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-slate-950 text-slate-500 text-xs py-3 text-center border-t border-slate-900">
-        <p>Centro de Salud San Antonio Abad • Obstetra Mariel • Simulación Obstétrica Interactiva Educativa</p>
-        <p class="text-[10px] text-slate-600 mt-0.5">Basado en la Norma Técnica de Atención Prenatal Reorientada (MINSA Perú)</p>
+    <footer class="bg-slate-900 border-t border-slate-800 py-3 text-center text-xs text-slate-500">
+        <p>Centro de Salud San Antonio Abad • Obstetra Mariel • Basado en la Norma Técnica de Atención Prenatal Reorganizada (MINSA Perú)</p>
     </footer>
 
-    <!-- MODAL 1: Calculadora Obstétrica (Gestograma e IMC) -->
-<!-- ... existing code ... baseline restart function -->
-        function restartGame() {
-            currentLives = 3;
-            currentScore = 0;
+    <script>
+        let currentLevelIndex = 0;
+        let currentQuestionIndex = 0;
+        let currentPatientPosition = 'door';
+        let answeredCurrentQuestion = false;
+        let score = 0;
+        let lives = 3;
+
+        function playSound(type) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.15);
+                    osc.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.4);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.35);
+                } else if (type === 'move') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(450, audioCtx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.12);
+                }
+            } catch (e) {
+                console.log('Audio disabled or unsupported');
+            }
+        }
+
+        function playDopplerSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let beatCount = 0;
+                const interval = setInterval(() => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(140, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
+
+                    beatCount++;
+                    if (beatCount >= 10) {
+                        clearInterval(interval);
+                    }
+                }, 420);
+            } catch(e) {}
+        }
+
+        function switchToolTab(tab) {
+            document.getElementById('toolPanelCalc').classList.add('hidden');
+            document.getElementById('toolPanelGestogram').classList.add('hidden');
+            document.getElementById('toolPanelAlarms').classList.add('hidden');
+
+            document.getElementById('tabBtnCalc').className = "px-2 py-1 rounded bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800";
+            document.getElementById('tabBtnGesto').className = "px-2 py-1 rounded bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800";
+            document.getElementById('tabBtnAlarms').className = "px-2 py-1 rounded bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800";
+
+            if (tab === 'calc') {
+                document.getElementById('toolPanelCalc').classList.remove('hidden');
+                document.getElementById('tabBtnCalc').className = "px-2 py-1 rounded bg-rose-900/80 text-rose-200 font-bold border border-rose-700";
+            } else if (tab === 'gestogram') {
+                document.getElementById('toolPanelGestogram').classList.remove('hidden');
+                document.getElementById('tabBtnGesto').className = "px-2 py-1 rounded bg-rose-900/80 text-rose-200 font-bold border border-rose-700";
+            } else if (tab === 'alarms') {
+                document.getElementById('toolPanelAlarms').classList.remove('hidden');
+                document.getElementById('tabBtnAlarms').className = "px-2 py-1 rounded bg-rose-900/80 text-rose-200 font-bold border border-rose-700";
+            }
+        }
+
+        function handleMoveAction(targetPos) {
+            playSound('move');
+            currentPatientPosition = targetPos;
+            const levelData = gameLevels[currentLevelIndex];
+            const qData = levelData.questions[currentQuestionIndex];
+
+            updateAvatarPosition(targetPos);
+
+            if (targetPos === 'door') {
+                document.getElementById('patientStatusBadge').innerHTML = `<i class="fa-solid fa-person-walking-arrow-right mr-1"></i> Paciente Ingresó al Consultorio`;
+                document.getElementById('patientStatusBadge').className = 'bg-rose-950 text-rose-300 border border-rose-800 px-3 py-1 rounded-full text-xs font-semibold';
+                
+                showSpeechBubble("¡Buenos días, Obstetra Mariel!");
+                
+                document.getElementById('btnCallPatient').disabled = true;
+                document.getElementById('btnCallPatient').classList.remove('pulse-subtle');
+                document.getElementById('btnCallPatient').className = "bg-slate-800 text-slate-500 font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all border border-transparent";
+
+                if (qData.reqPosition === 'desk') {
+                    document.getElementById('btnDesk').disabled = false;
+                    document.getElementById('btnDesk').className = "bg-rose-700 hover:bg-rose-600 text-white font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all border border-rose-400 pulse-subtle";
+                    document.getElementById('patientDialogueText').innerHTML = `<strong class="text-rose-300">${levelData.patientName}</strong> ha ingresado. Ahora haz clic en <strong class="text-rose-400">"2. Sentarse al Escritorio"</strong> para iniciar la entrevista clínica.`;
+                } else if (qData.reqPosition === 'bed') {
+                    document.getElementById('btnBed').disabled = false;
+                    document.getElementById('btnBed').className = "bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all border border-amber-400 pulse-subtle";
+                    document.getElementById('patientDialogueText').innerHTML = `<strong class="text-rose-300">${levelData.patientName}</strong> ha ingresado. Pídele que pase a la <strong class="text-amber-400">"3. Pasar a Camilla"</strong> para su evaluación.`;
+                }
+            } else if (targetPos === 'desk') {
+                document.getElementById('patientStatusBadge').innerHTML = `<i class="fa-solid fa-chair mr-1"></i> Entrevista en Escritorio`;
+                document.getElementById('patientStatusBadge').className = 'bg-emerald-950 text-emerald-300 border border-emerald-800 px-3 py-1 rounded-full text-xs font-semibold';
+                
+                if (qData.reqPosition === 'desk') {
+                    showQuestionUI(qData);
+                }
+            } else if (targetPos === 'bed') {
+                document.getElementById('patientStatusBadge').innerHTML = `<i class="fa-solid fa-bed-pulse mr-1"></i> Examen en Camilla / Balanza`;
+                document.getElementById('patientStatusBadge').className = 'bg-cyan-950 text-cyan-300 border border-cyan-800 px-3 py-1 rounded-full text-xs font-semibold';
+                
+                if (qData.reqPosition === 'bed') {
+                    showQuestionUI(qData);
+                }
+            }
+        }
+
+        function updateAvatarPosition(pos) {
+            const avatar = document.getElementById('patientAvatar');
+            if (pos === 'door') {
+                avatar.style.left = '1.5rem';
+                avatar.style.opacity = '1';
+            } else if (pos === 'desk') {
+                avatar.style.left = '42%';
+                avatar.style.opacity = '1';
+            } else if (pos === 'bed') {
+                avatar.style.left = '78%';
+                avatar.style.opacity = '1';
+            }
+        }
+
+        function showSpeechBubble(text) {
+            const bubble = document.getElementById('patientSpeechBubble');
+            const speechText = document.getElementById('speechBubbleText');
+            speechText.textContent = text;
+            bubble.classList.remove('hidden');
+        }
+
+        function hideSpeechBubble() {
+            document.getElementById('patientSpeechBubble').classList.add('hidden');
+        }
+
+        function showQuestionUI(qData) {
+            const levelData = gameLevels[currentLevelIndex];
+            answeredCurrentQuestion = false;
+
+            document.getElementById('patientDialogueText').innerHTML = `Atendiendo a <strong class="text-rose-300">${levelData.patientName}</strong>. Lee atentamente el caso planteado a continuación:`;
+
+            const questionContainer = document.getElementById('questionContainer');
+            const questionText = document.getElementById('questionText');
+            const optionsGrid = document.getElementById('optionsGrid');
+            const feedbackBox = document.getElementById('feedbackBox');
+            const btnNext = document.getElementById('btnNextAction');
+
+            questionContainer.classList.remove('hidden');
+            feedbackBox.classList.add('hidden');
+            btnNext.classList.add('hidden');
+
+            questionText.textContent = qData.prompt;
+            optionsGrid.innerHTML = '';
+
+            // Dynamic setup speech bubble for this specific question phase
+            if (qData.promptSpeech) {
+                showSpeechBubble(qData.promptSpeech);
+            } else {
+                hideSpeechBubble();
+            }
+
+            qData.options.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-slate-950 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-slate-600 p-3 rounded-xl transition text-xs font-medium flex items-center justify-between group shadow";
+                btn.innerHTML = `<span>${opt.text}</span> <i class="fa-solid fa-chevron-right text-slate-600 group-hover:text-amber-400 text-xs"></i>`;
+                btn.onclick = () => evaluateAnswer(opt, qData);
+                optionsGrid.appendChild(btn);
+            });
+        }
+
+        const gameLevels = [
+            {
+                patientName: "Amira (22 años, 8 sem)",
+                badge: "NIVEL 1: PRIMERA ATENCIÓN PRENATAL Y CONFIRMACIÓN",
+                questions: [
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ¡tengo un retraso de 4 semanas y estoy algo nerviosa!",
+                        prompt: "Amira acude a tu consultorio refiriendo un retraso menstrual de 4 semanas. ¿Cuál es la primera acción diagnóstica que debes realizar?",
+                        options: [
+                            { text: "A) Solicitar una Prueba de Embarazo rápida en orina o β-HCG cualitativa.", correct: true, speechCorrect: "¡Genial! Vamos a hacer la prueba de orina de una vez.", speechWrong: "¿Una ecografía 4D tan pronto? Pensé que primero confirmábamos..." },
+                            { text: "B) Programar una ecografía 4D inmediatamente.", correct: false, speechWrong: "¿Una ecografía 4D tan pronto? Pensé que primero confirmábamos..." },
+                            { text: "C) Indicar inicio inmediato de hierro a alta dosis.", correct: false, speechWrong: "¿Tomar hierro sin saber aún si estoy embarazada?" }
+                        ],
+                        explanation: "La confirmación diagnóstica de la gestación con una prueba cualitativa de β-HCG u orina es el primer paso según la Norma Técnica del MINSA."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "¡Salió positivo! ¿Qué dato mío necesita anotar en la tarjeta?",
+                        prompt: "Con el resultado positivo de embarazo, abres el carné perinatal CLAP. ¿Qué dato fundamental debes solicitar para calcular la Fecha Probable de Parto (FPP)?",
+                        options: [
+                            { text: "A) Fecha de Última Menstruación (FUM) confiable.", correct: true, speechCorrect: "Mi última regla empezó exacto el 12 de enero, Obstetra.", speechWrong: "¿La fecha de mis náuseas? Creo que eso varía mucho..." },
+                            { text: "B) Fecha de inicio de síntomas de náuseas.", correct: false, speechWrong: "¿La fecha de mis náuseas? Creo que eso varía mucho..." },
+                            { text: "C) Edad de la pareja.", correct: false, speechWrong: "Mi pareja tiene 24 años, ¿pero eso define el parto?" }
+                        ],
+                        explanation: "La FUM confiable permite estimar la edad gestacional exacta y calcular la FPP mediante la Regla de Naegele (+7 días, -3 meses)."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Ya subí a la balanza, Obstetra. ¿Cómo está mi peso?",
+                        prompt: "Acompañas a Amira a la balanza y camilla. Su peso actual es 54 kg y su talla es 1.55 m. ¿Cuál es su IMC y cómo se clasifica?",
+                        options: [
+                            { text: "A) IMC 22.5 kg/m² (Estado Nutricional Normal).", correct: true, speechCorrect: "¡Qué bueno saber que mi peso está adecuado para iniciar!", speechWrong: "¿Sobrepeso? Pero si siempre he sido delgada..." },
+                            { text: "B) IMC 28.1 kg/m² (Sobrepeso).", correct: false, speechWrong: "¿Sobrepeso? Pero si siempre he sido delgada..." },
+                            { text: "C) IMC 17.2 kg/m² (Bajo peso).", correct: false, speechWrong: "¿Bajo peso? No creo estar desnutrida..." }
+                        ],
+                        explanation: "IMC = 54 / (1.55 x 1.55) = 22.47 kg/m². Se clasifica como IMC Normal (18.5 - 24.9 kg/m²)."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Siento el brazalete ajustado... ¿cuánto marcó mi presión?",
+                        prompt: "Durante el examen físico general en la camilla, le tomas la Presión Arterial (PA) y obtienes 110/70 mmHg. ¿Cómo interpretas este resultado?",
+                        options: [
+                            { text: "A) Cifra de PA Normal para el primer trimestre de gestación.", correct: true, speechCorrect: "Me alegra que mi presión arterial esté bien saludable.", speechWrong: "¿Tengo hipertensión? ¡Me asusté!" },
+                            { text: "B) Signo evidente de hipertensión arterial.", correct: false, speechWrong: "¿Tengo hipertensión? ¡Me asusté!" },
+                            { text: "C) Hipotensión severa de urgencia.", correct: false, speechWrong: "¿Hipotensión grave? Pero no me siento desmayada..." }
+                        ],
+                        explanation: "Una lectura de 110/70 mmHg refleja valores hemodinámicos normales dentro del control prenatal."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ¿qué vitamina debo empezar a tomar desde hoy?",
+                        prompt: "De regreso al escritorio, Amira pregunta qué suplemento debe consumir inmediatamente en este primer trimestre. ¿Qué le prescribes?",
+                        options: [
+                            { text: "A) Ácido Fólico 0.4 mg/día (o hasta 1 mg/día según norma) para prevenir defectos del tubo neural.", correct: true, speechCorrect: "Anotado: Ácido Fólico diario para proteger a mi bebé.", speechWrong: "¿Calcio desde ya? Pensé que eso era más adelante..." },
+                            { text: "B) Calcio 2000 mg/día.", correct: false, speechWrong: "¿Calcio desde ya? Pensé que eso era más adelante..." },
+                            { text: "C) Inyecciones semanales de Vitamina B12 únicamente.", correct: false, speechWrong: "¿Inyecciones? ¡Le tengo miedo a las agujas!" }
+                        ],
+                        explanation: "El Ácido Fólico se indica de manera prioritaria durante las primeras semanas para la prevención de malformaciones como la espina bífida."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Doctora, ¿qué exámenes de sangre me debo tomar en el laboratorio?",
+                        prompt: "Amira comenta: «Obstetra, ¿qué análisis de sangre debo hacerme en esta primera consulta?». ¿Qué batería inicial de laboratorio del MINSA solicitas?",
+                        options: [
+                            { text: "A) Hemograma/Hemoglobina, Grupo sanguíneo y Factor Rh, Tamizaje VIH y Sífilis (RPR/Prueba Rápida), Glucosa y Examen de Orina completo / Urocultivo.", correct: true, speechCorrect: "Iré mañana temprano en ayunas a tomarme todo el perfil.", speechWrong: "¿Solo colesterol? Pero necesito saber mi hemoglobina..." },
+                            { text: "B) Únicamente un examen de colesterol y triglicéridos.", correct: false, speechWrong: "¿Solo colesterol? Pero necesito saber mi hemoglobina..." },
+                            { text: "C) Solo una prueba rápida de malaria.", correct: false, speechWrong: "¿Solo malaria? ¿Y los demás análisis básicos?" }
+                        ],
+                        explanation: "La batería de primer control prenatal del MINSA incluye Hb, Grupo/Rh, Glucosa, VDRL/RPR, VIH, y orina para tamizaje precoz de complicaciones."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Tengo dudas con mis vacunas... ¿me toca la antitetánica hoy?",
+                        prompt: "Amira comenta que no sabe si tiene la vacuna antitetánica. ¿Qué indicación le brindas en su carné sobre la vacunación DTaP?",
+                        options: [
+                            { text: "A) Le explicas que la vacuna DTaP se aplicará a partir de las 27-28 semanas de gestación.", correct: true, speechCorrect: "Entendido, esperaré al tercer trimestre para esa vacuna.", speechWrong: "¿Pinchazo hoy? Ay, pensé que era más adelante..." },
+                            { text: "B) Se la aplicas hoy mismo a las 8 semanas.", correct: false, speechWrong: "¿Pinchazo hoy? Ay, pensé que era más adelante..." },
+                            { text: "C) Le indicas que las vacunas están prohibidas en embarazadas.", correct: false, speechWrong: "¿Prohibidas? Tenía entendido que algunas sí protegen al bebé..." }
+                        ],
+                        explanation: "La vacuna DTaP (tos ferina, difteria, tétanos) se administra en el tercer trimestre (semana 27 a 36) para asegurar la transferencia transplacentaria de anticuerpos."
+                    }
+                ]
+            },
+            {
+                patientName: "Camila (28 años, 14 sem)",
+                badge: "NIVEL 2: MANEJO DE NÁUSEAS, PRESIÓN Y SUPLEMENTACIÓN CON HIERRO",
+                questions: [
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Ay Obstetra, en las mañanas me dan unas náuseas horribles...",
+                        prompt: "Camila acude al escritorio comentando que sufre de náuseas matutinas leves. ¿Cuál es la primera recomendación no farmacológica?",
+                        options: [
+                            { text: "A) Recomendar comidas fraccionadas en pequeñas cantidades, bajas en grasa y evitar ayunos prolongados.", correct: true, speechCorrect: "Probaré comer galletitas de agua y porciones pequeñas.", speechWrong: "¿Ayunar 24 horas? Si no como me da más mareo..." },
+                            { text: "B) Indicarle ayuno completo por 24 horas para limpiar el estómago.", correct: false, speechWrong: "¿Ayunar 24 horas? Si no como me da más mareo..." },
+                            { text: "C) Prescribir antieméticos inyectables de alta potencia inmediatamente.", correct: false, speechWrong: "¿Inyecciones fuertes? Quisiera probar cambios en la dieta primero..." }
+                        ],
+                        explanation: "Las náuseas fisiológicas del primer trimestre/inicio del segundo se manejan primeramente con medidas dietéticas: fraccionar alimentos en 5 a 6 tomas al día."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "A ver cuántos kilos he subido desde la semana 9...",
+                        prompt: "Mueves a Camila a la balanza. En su control anterior (semana 9) pesaba 60 kg y hoy pesa 61.2 kg (Talla 1.60 m). ¿Cómo interpretas la ganancia de peso?",
+                        options: [
+                            { text: "A) Aumento de peso exagerado y peligroso.", correct: false, speechWrong: "¿Exagerado? ¡Pero solo subí un kilo y poquito!" },
+                            { text: "B) Ganancia ponderal adecuada para su edad gestacional (aprox. 1 a 1.5 kg en primer trimestre/inicio del segundo).", correct: true, speechCorrect: "¡Qué alivio! Voy ganando peso al ritmo correcto.", speechWrong: "¿Exagerado? ¡Pero solo subí un kilo y poquito!" },
+                            { text: "C) Pérdida preocupante de masa muscular.", correct: false, speechWrong: "¿Pérdida? Si en la balanza salí con más peso..." }
+                        ],
+                        explanation: "Una ganancia de 1.2 kg en las primeras 14 semanas es completamente esperada en una mujer con IMC previo normal."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Siento un poquito caliente el rostro, Obstetra...",
+                        prompt: "En la camilla tomas su Presión Arterial y encuentras 145/95 mmHg. Camila dice sentirse bien. ¿Qué acción corresponde tomar?",
+                        options: [
+                            { text: "A) Dejarla ir a casa porque no siente ningún dolor de cabeza ni malestar.", correct: false, speechWrong: "¿Irme así? Me preocupa que la presión haya salido alta..." },
+                            { text: "B) Reposar 15-20 minutos a la paciente, reevaluar la PA e investigar signos de alarma (cefalea, escotomas, acúfenos).", correct: true, speechCorrect: "Me quedo descansando aquí de ladito para volver a medirla.", speechWrong: "¿Irme así? Me preocupa que la presión haya salido alta..." },
+                            { text: "C) Darle un analgésico común y programar cita dentro de 2 meses.", correct: false, speechWrong: "¿Un analgésico y volver en 2 meses? ¿Sin chequear la presión?" }
+                        ],
+                        explanation: "Cifras de PA ≥ 140/90 mmHg registradas por primera vez exigen reposo, reposicionamiento, comprobación y descarte de trastornos hipertensivos."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Volvió a marcar 140/90... ¿qué examen me van a pedir?",
+                        prompt: "Al repetir la toma de PA tras 20 minutos de reposo, el resultado es 140/90 mmHg. ¿Qué examen de laboratorio solicitarías con urgencia?",
+                        options: [
+                            { text: "A) Examen de Orina Completo o Tira Reactiva para proteinuria / Exámenes de función renal y hepática.", correct: true, speechCorrect: "Acepto, juntaré la orina para descartar proteínas de una vez.", speechWrong: "¿Prueba de glucosa de 100g? Pensé que descartábamos preeclampsia..." },
+                            { text: "B) Prueba de tolerancia oral a la glucosa de 100g.", correct: false, speechWrong: "¿Prueba de glucosa de 100g? Pensé que descartábamos preeclampsia..." },
+                            { text: "C) Dosaje de perfil tiroideo exclusivo.", correct: false, speechWrong: "¿Solo tiroides? ¿Eso evalúa el riesgo de la presión?" }
+                        ],
+                        explanation: "La proteinuria (en orina de 24h o tira reactiva) junto con pruebas de laboratorio es indispensable para diferenciar Hipertensión Gestacional de Preeclampsia."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Llegué a la semana 14... ¿ya me toca el suplemento de hierro?",
+                        prompt: "De regreso al escritorio, Camila consulta sobre cuándo debe iniciar la suplementación con hierro y ácido fólico según MINSA. ¿Qué le indicas?",
+                        options: [
+                            { text: "A) Debe iniciar exactamente desde la semana 14 de gestación y continuar hasta los 2 meses posparto.", correct: true, speechCorrect: "Perfecto, comenzaré con mis pastillas de hierro hoy mismo.", speechWrong: "¿Esperar a la última semana? ¿No me daría anemia antes?" },
+                            { text: "B) Solo debe tomar suplementos durante la última semana antes del parto.", correct: false, speechWrong: "¿Esperar a la última semana? ¿No me daría anemia antes?" },
+                            { text: "C) No requiere ningún suplemento si come carnes rojas una vez al mes.", correct: false, speechWrong: "¿Solo con carne una vez al mes alcanza? Me parece muy poco..." }
+                        ],
+                        explanation: "En la atención prenatal reorganizada del MINSA, la suplementación preventiva con Hierro + Ácido Fólico se inicia formalmente a las 14 semanas."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ¿con qué juguito o bebida me tomo el hierro?",
+                        prompt: "«Obstetra, ¿con qué líquido me recomienda tomar las tabletas de hierro para que se absorban mejor?».",
+                        options: [
+                            { text: "A) Con jugos cítricos ricos en Vitamina C (naranjada, limonada) o agua sola, lejos de las comidas.", correct: true, speechCorrect: "¡Limonada recién exprimida entonces! Gracias por el dato.", speechWrong: "¿Con té cargado? Me habían dicho que el té cortaba el hierro..." },
+                            { text: "B) Con una taza de té o café bien cargado.", correct: false, speechWrong: "¿Con té cargado? Me habían dicho que el té cortaba el hierro..." },
+                            { text: "C) Con un vaso grande de leche entera fría.", correct: false, speechWrong: "¿Con leche? Escuché que el calcio no deja absorber el hierro..." }
+                        ],
+                        explanation: "La Vitamina C favorece la absorción del hierro elemental, mientras que los lácteos, el té y el café inhiben notablemente su fijación intestinal."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Me dijeron que las pastillas de hierro oscurecen las deposiciones...",
+                        prompt: "«Obstetra, ¿es verdad que la pastilla de hierro me puede estreñir o cambiar el color de las deposiciones?».",
+                        options: [
+                            { text: "A) Sí, explicar que es un efecto secundario común (heces oscuras o estreñimiento) y sugerir aumentar el consumo de agua y fibra.", correct: true, speechCorrect: "Menos mal me avisa, tomaré más agua para no asustarme.", speechWrong: "¿Suspenderlas para siempre? Pero el bebé necesita hierro..." },
+                            { text: "B) Decirle que si sus deposiciones cambian de color suspenda de inmediato el tratamiento para siempre.", correct: false, speechWrong: "¿Suspenderlas para siempre? Pero el bebé necesita hierro..." },
+                            { text: "C) Negar rotundamente que la suplementación cause cualquier cambio en el digestivo.", correct: false, speechWrong: "Mi hermana me dijo que sí cambia el color, ¿no es así?" }
+                        ],
+                        explanation: "Informar anticipadamente sobre los efectos secundarios gastrointestinales esperados garantiza una alta adherencia a la suplementación de hierro."
+                    }
+                ]
+            },
+            {
+                patientName: "Daniela (31 años, 18 sem)",
+                badge: "NIVEL 3: ANTECEDENTES OBSTÉTRICOS Y FACTORES DE RIESGO",
+                questions: [
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, mi bebito anterior nació prematuro de 31 semanas...",
+                        prompt: "Daniela se sienta en tu escritorio. Al revisar sus antecedentes, refieres que su embarazo anterior finalizó por parto pretérmino a las 31 semanas. ¿Cómo clasifica esto su riesgo actual?",
+                        options: [
+                            { text: "A) Gestación con antecedente de riesgo obstétrico relevante que requiere seguimiento estrecho.", correct: true, speechCorrect: "Agradezco que me controle bien seguido para cuidar este embarazo.", speechWrong: "¿Sin riesgo? Pero si tuve miedo de perder a mi bebé anterior..." },
+                            { text: "B) Embarazo de muy bajo riesgo porque los antecedentes pasados nunca influyen en el actual.", correct: false, speechWrong: "¿Sin riesgo? Pero si tuve miedo de perder a mi bebé anterior..." },
+                            { text: "C) Paciente que debe ser sometida a cesárea inmediata hoy mismo.", correct: false, speechWrong: "¿Cesárea hoy a las 18 semanas? ¡Pero si mi bebé es muy pequeñito!" }
+                        ],
+                        explanation: "El antecedente de parto pretérmino anterior es el factor de riesgo más importante para recurrencia de prematuridad en el embarazo actual."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "A ver, he tenido 2 partos, 1 aborto y este embarazo...",
+                        prompt: "Daniela menciona tener 31 años, 2 partos vaginales previos y 1 aborto. ¿Cómo se expresa su fórmula obstétrica G_ P_?",
+                        options: [
+                            { text: "A) G4 P2012 (Gesta 4, Partos a término 2, Prematuros 0, Abortos 1, Hijos vivos 2).", correct: true, speechCorrect: "Así es: 4 gestaciones en total contando la de ahora.", speechWrong: "¿Gesta 2? Pero este es mi cuarto embarazo en la vida..." },
+                            { text: "B) G2 P1001.", correct: false, speechWrong: "¿Gesta 2? Pero este es mi cuarto embarazo en la vida..." },
+                            { text: "C) G1 P0000.", correct: false, speechWrong: "¿Gesta 1? Si ya tengo dos hijos correteando en casa..." }
+                        ],
+                        explanation: "Se cuenta el embarazo actual (Gesta 4) + la historia de partos anteriores (P2012: 2 a término, 0 prematuros con vida, 1 aborto, 2 hijos vivos)."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Ya me eché en la camilla. ¿Hasta dónde le llegó mi utero?",
+                        prompt: "Acompañas a Daniela a la camilla de exploración. A las 18 semanas de gestación, ¿es posible palpar la Altura Uterina a nivel del ombligo?",
+                        options: [
+                            { text: "A) Sí, el fondo uterino suele localizarse cerca o ligeramente por debajo de la cicatriz umbilical alrededor de las 20 semanas.", correct: true, speechCorrect: "Siento una bolita dura cerquita del ombligo, ¡qué emoción!", speechWrong: "¿Todavía abajo metido? Pero si ya se me nota pancita..." },
+                            { text: "B) No, el útero aún se encuentra intra-pélvico e impalpable.", correct: false, speechWrong: "¿Todavía abajo metido? Pero si ya se me nota pancita..." },
+                            { text: "C) A las 18 semanas el fondo uterino ya llega al apéndice xifoides (debajo de las costillas).", correct: false, speechWrong: "¿Hasta las costillas? No siento la tripa tan arriba todavía..." }
+                        ],
+                        explanation: "A las 18-20 semanas de gestación, el fondo uterino es palpable abdominalmente aproximándose al level del ombligo."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "¡Ay, quiero escuchar el corazón de mi bebé con el Doppler!",
+                        prompt: "Con el estetoscopio Doppler fetal auscultas los latidos del bebé en la camilla y registras 142 latidos por minuto. ¿Cómo interpretas el resultado?",
+                        options: [
+                            { text: "A) Frecuencia cardíaca fetal normal (Rango normal: 110 a 160 LPM).", correct: true, speechCorrect: "¡Suena como un caballito galopando bien fuerte!", speechWrong: "¿Taquicardia? Se escuchaba rítmico y bonito..." },
+                            { text: "B) Taquicardia fetal severa.", correct: false, speechWrong: "¿Taquicardia? Se escuchaba rítmico y bonito..." },
+                            { text: "C) Bradicardia fetal que requiere reanimación.", correct: false, speechWrong: "¿Lento? Pero si latía bien rapidito..." }
+                        ],
+                        explanation: "La frecuencia cardíaca fetal basal normal se sitúa entre 110 y 160 latidos por minuto."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Como tuve bebé prematuro, ¿debo quedarme en cama sin moverme?",
+                        prompt: "De vuelta al escritorio, Daniela consulta si el antecedente de parto pretérmino le impide realizar actividad física suave. ¿Qué le orientas?",
+                        options: [
+                            { text: "A) Se recomienda reposo absoluto en cama durante los 9 meses de gestación.", correct: false, speechWrong: "¿Nueve meses echada sin caminar? Me voy a entumecer..." },
+                            { text: "B) Puede realizar caminatas suaves e hidrocinesia sin impacto, evitando ejercicios extenuantes o de alto riesgo de caídas.", correct: true, speechCorrect: "Caminar suavecito por el parque me hará muy bien para el estrés.", speechWrong: "¿Nueve meses echada sin caminar? Me voy a entumecer..." },
+                            { text: "C) Debe practicar deportes de contacto de alta intensidad diariamente.", correct: false, speechWrong: "¿Deporte intenso? No quiero poner en riesgo mi cuello uterino..." }
+                        ],
+                        explanation: "Salvo contraindicación médica o incompetencia cervical demostrada, se promueve la caminata suave y el ejercicio aeróbico ligero."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ¿cómo sé si estoy teniendo contracciones antes de tiempo?",
+                        prompt: "«Obstetra, ¿cuáles son las señales de contracciones prematuras por las que debería acudir inmediatamente por emergencia?».",
+                        options: [
+                            { text: "A) Endurecimiento rítmico del abdomen (más de 2 a 3 veces por hora) o dolor tipo cólico menstrual persistente antes de tiempo.", correct: true, speechCorrect: "Si siento que la panza se me pone dura como piedra seguido, vendré volando.", speechWrong: "¿Solo si me duelen las piernas? Pensé que el dolor era en la panza..." },
+                            { text: "B) Sensación leve de cansancio en las piernas por las tardes.", correct: false, speechWrong: "¿Solo si me duelen las piernas? Pensé que el dolor era en la panza..." },
+                            { text: "C) Picazón ocasional en la piel del estómago.", correct: false, speechWrong: "¿Picazón? La picazón es por estiramiento de piel, ¿no?" }
+                        ],
+                        explanation: "Identificar precozmente la dinámica uterina prematura (contracciones continuas) es vital para acudir a tiempo e inhibir el parto prematuro."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Escuché sobre la medición del cuello del útero con ecografía...",
+                        prompt: "«Obstetra, ¿debo realizarme alguna ecografía especial en estas semanas para medir el cuello del útero?».",
+                        options: [
+                            { text: "A) Sí, la Cervicometría transvaginal entre las 18 y 24 semanas ayuda a predecir el riesgo de parto pretérmino.", correct: true, speechCorrect: "Me haré la cervicometría para estar completamente tranquila.", speechWrong: "¿Prohibidas las ecografías? Pero si son inocuas..." },
+                            { text: "B) No, las ecografías están totalmente prohibidas en pacientes con antecedentes de riesgo.", correct: false, speechWrong: "¿Prohibidas las ecografías? Pero si son inocuas..." },
+                            { text: "C) Solo una radiografía de pelvis.", correct: false, speechWrong: "¿Radiografía con rayos X? Mi bebé es frágil..." }
+                        ],
+                        explanation: "La medición de la longitud cervical (cervicometría) evalúa si existe acortamiento cervical precoz para indicar tratamiento profiláctico oportuno."
+                    }
+                ]
+            },
+            {
+                patientName: "Lucía (23 años, 20 sem)",
+                badge: "NIVEL 4: INTERPRETACIÓN DE EXÁMENES AUXILIARES Y LABORATORIO",
+                questions: [
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Aquí le traigo mis análisis... mi hemoglobina salió 9.8 g/dL.",
+                        prompt: "Lucía acude al escritorio a mostrarte sus resultados de laboratorio del primer trimestre. Su Hemoglobina es de 9.8 g/dL (Ajustada por altitud). ¿Cómo diagnosticas su resultado?",
+                        options: [
+                            { text: "A) Anemia Moderada en la gestante (Hb entre 9.0 y 9.9 g/dL en el 2do trimestre).", correct: true, speechCorrect: "Uy, con razón me sentía algo cansada y con sueño.", speechWrong: "¿Normal? Pero el rango mínimo me dijeron que era 11..." },
+                            { text: "B) Hemoglobina normal y óptima para la gestación.", correct: false, speechWrong: "¿Normal? Pero el rango mínimo me dijeron que era 11..." },
+                            { text: "C) Policitemia severa que requiere sangría.", correct: false, speechWrong: "¿Policitemia con sangre gruesa? Si 9.8 es bajo..." }
+                        ],
+                        explanation: "En la gestación, Hb < 11.0 g/dL define anemia. El valor de 9.8 g/dL corresponde a Anemia Moderada según MINSA."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Como salió 9.8, ¿debo tomar más pastillas de sulfato ferroso?",
+                        prompt: "Ante el diagnóstico de Anemia Moderada (Hb 9.8 g/dL), ¿cuál es la conducta de tratamiento terapéutico con sulfato ferroso?",
+                        options: [
+                            { text: "A) Iniciar dosis terapéutica de Hierro Elemental (120 mg/día) + Ácido Fólico y programar control de Hb en 30 días.", correct: true, speechCorrect: "Aumentaremos la dosis a 2 pastillas al día para subir la sangre.", speechWrong: "¿Seguir igual con 1 sola pastilla? ¿Así curaré la anemia?" },
+                            { text: "B) Mantener la dosis profiláctica estándar sin ningún cambio.", correct: false, speechWrong: "¿Seguir igual con 1 sola pastilla? ¿Así curaré la anemia?" },
+                            { text: "C) Indicar transfusión sanguínea de urgencia de 3 paquetes globulares.", correct: false, speechWrong: "¿Transfusión? ¡Qué miedo! ¿No se puede curar con pastillas?" }
+                        ],
+                        explanation: "El tratamiento de la anemia gestacional diagnosticada requiere duplicar la dosis a 120 mg de hierro elemental diario hasta corregir el nivel de hemoglobina."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, en la prueba rápida de Sífilis salió 'Reactivo 1:8'...",
+                        prompt: "Revisas el resultado de su prueba rápida para Sífilis (RPR) y sale REACTIVO (1:8 diluciones). ¿Qué medida de manejo inmediato debes disponer?",
+                        options: [
+                            { text: "A) Iniciar de inmediato tratamiento con Penicilina G Benzatínica 2.4 Millones UI IM a la gestante y tratar a su pareja sexual.", correct: true, speechCorrect: "Nos colocaremos la penicilina hoy mismo mi pareja y yo.", speechWrong: "¿Esperar 3 meses? Pero mi bebé se puede contagiar..." },
+                            { text: "B) Esperar 3 meses más sin tratamiento para repetir la prueba.", correct: false, speechWrong: "¿Esperar 3 meses? Pero mi bebé se puede contagiar..." },
+                            { text: "C) Indicar únicamente antisépticos vaginales en óvulos.", correct: false, speechWrong: "¿Solo óvulos? ¿La infección de la sangre se cura con óvulos?" }
+                        ],
+                        explanation: "Frente a un RPR reactivo, se debe administrar el esquema de Penicilina Benzatínica inmediatamente para prevenir la Sífilis Congénita en el feto."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "En mi examen de orina salió una bacteria, pero no me duele nada.",
+                        prompt: "Su Urocultivo muestra > 100,000 UFC/ml de Escherichia coli, aunque Lucía no presenta dolor ni ardor al orinar. ¿Cómo se define y trata?",
+                        options: [
+                            { text: "A) Bacteriuria Asintomática, la cual DEBE tratarse con antibiótico seguro en el embarazo para prevenir pielonefritis y parto pretérmino.", correct: true, speechCorrect: "Tomaré el antibiótico a la hora exacta para limpiar esa bacteria.", speechWrong: "¿No tomar nada porque no me duele? Me da miedo que suba a los riñones..." },
+                            { text: "B) Infección urinaria leve que no necesita ningún tratamiento por falta de síntomas.", correct: false, speechWrong: "¿No tomar nada porque no me duele? Me da miedo que suba a los riñones..." },
+                            { text: "C) Muestra contaminada que debe ignorarse por completo.", correct: false, speechWrong: "¿Ignorarla? Pero el papel dice más de 100,000 colonias..." }
+                        ],
+                        explanation: "Toda bacteriuria asintomática en la gestante requiere tratamiento antibiótico específico para evitar complicaciones como sepsis renal o prematuridad."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Me dijeron que a las 20 semanas me toca una ecografía detallada...",
+                        prompt: "Acompañas a Lucía a la camilla. ¿Qué examen ecográfico se recomienda realizar idealmente entre las semanas 18 y 22 de gestación?",
+                        options: [
+                            { text: "A) Ecografía Morfológica o Genética de II Trimestre para evaluar la anatomía detallada de todos los órganos fetales.", correct: true, speechCorrect: "¡Iré a hacérmela para ver sus deditos, corazoncito y cerebro!", speechWrong: "¿Solo transvaginal? Pero si mi bebé ya está grande..." },
+                            { text: "B) Ecografía transvaginal básica únicamente.", correct: false, speechWrong: "¿Solo transvaginal? Pero si mi bebé ya está grande..." },
+                            { text: "C) Radiografía pélvica contrastada.", correct: false, speechWrong: "¿Radiografía? Prefiero ultrasonido que no tiene radiación..." }
+                        ],
+                        explanation: "La ecografía morfológica de II trimestre (18-22 semanas) evalúa minuciosamente la estructura anatómica fetal y marcadores de anomalías."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ¿qué es la prueba del jarabe dulce que se hace a las 24 semanas?",
+                        prompt: "«Obstetra, ¿qué prueba se realiza entre las 24 y 28 semanas para descartar la Diabetes Gestacional?».",
+                        options: [
+                            { text: "A) Prueba de Tolerancia Oral a la Glucosa (PTOG) con carga de 75 gramos de glucosa en ayunas.", correct: true, speechCorrect: "Tomaré ese preparado dulce para medir el azúcar en sangre.", speechWrong: "¿Triglicéridos en orina? Pensé que median azúcar en sangre..." },
+                            { text: "B) Prueba rápida de triglicéridos en orina.", correct: false, speechWrong: "¿Triglicéridos en orina? Pensé que median azúcar en sangre..." },
+                            { text: "C) Conteo de plaquetas únicamente.", correct: false, speechWrong: "¿Plaquetas? La diabetes es por el azúcar acumulado..." }
+                        ],
+                        explanation: "La prueba de sobrecarga oral a la glucosa (PTOG 75g) realizada entre las 24 y 28 semanas es el estándar internacional para detectar diabetes gestacional."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Soy del tipo de sangre O Negativo... ¿mi bebé corre riesgo?",
+                        prompt: "«Obstetra, mi tipo de sangre es O Negativo (Rh Negativo). ¿Qué vacuna o ampolla especial me tienen que colocar y cuándo?».",
+                        options: [
+                            { text: "A) Inmunoglobulina Anti-D (RhoGAM) a las 28 semanas de gestación para prevenir la isoinmunización Rh.", correct: true, speechCorrect: "Compraré la ampolla RhoGAM para la semana 28 sin falta.", speechWrong: "¿Sarampión? Hablaba del factor de mi sangre Rh negativo..." },
+                            { text: "B) Vacuna contra el sarampión únicamente.", correct: false, speechWrong: "¿Sarampión? Hablaba del factor de mi sangre Rh negativo..." },
+                            { text: "C) No requiere ningún tratamiento ni seguimiento.", correct: false, speechWrong: "¿Nada? Escuché que los anticuerpos pueden atacar al bebé..." }
+                        ],
+                        explanation: "En gestantes Rh negativas no sensibilizadas, la administración preventiva de la Inmunoglobulina Anti-D a las 28 semanas evita la destrucción eritrocitaria en el recién nacido."
+                    }
+                ]
+            },
+            {
+                patientName: "Andrea (27 años, 28 sem)",
+                badge: "NIVEL 5: EVALUACIÓN OBSTÉTRICA, BIOMETRÍA FETAL Y MOVIMIENTOS",
+                questions: [
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "¡Obstetra, mi bebito da unas patadas tremendas desde la semana pasada!",
+                        prompt: "Andrea llega al escritorio para su control de las 28 semanas. Refiere que siente moverse activamente a su bebé. ¿Desde qué semana la gestante suele percibir claramente los movimientos fetales?",
+                        options: [
+                            { text: "A) Entre las 18 y 22 semanas de gestación (un poco antes en multíparas).", correct: true, speechCorrect: "Sí, como a las 20 semanas sentí como maripositas en la panza.", speechWrong: "¿Recién a las 38 semanas? ¡Pero si ya patea fuertísimo!" },
+                            { text: "B) Únicamente a partir de la semana 38.", correct: false, speechWrong: "¿Recién a las 38 semanas? ¡Pero si ya patea fuertísimo!" },
+                            { text: "C) Desde la semana 4 de gestación.", correct: false, speechWrong: "¿A las 4 semanas? A las 4 semanas ni sabía que estaba embarazada..." }
+                        ],
+                        explanation: "La percepción materna de movimientos fetales (pataditas) inicia habitualmente entre las 18-20 semanas en primigestas y 16-18 semanas en multíparas."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Mídame la pancita en la camilla con su cinta métrica...",
+                        prompt: "Acompañas a Andrea a la camilla. Para medir la Altura Uterina (AU), colocas la cinta métrica flexible. ¿Cuál es la técnica correcta?",
+                        options: [
+                            { text: "A) Fijar el extremo cero de la cinta en el borde superior de la sínfisis del pubis y deslizarla entre los dedos índice y medio hasta el fondo uterino.", correct: true, speechCorrect: "Siento el borde de la cinta justo sobre el huesito de mi pubis.", speechWrong: "¿Medir a lo ancho de mi cadera? Pensé que se medía a lo largo..." },
+                            { text: "B) Medir en forma transversal desde la cresta ilíaca izquierda a la derecha.", correct: false, speechWrong: "¿Medir a lo ancho de mi cadera? Pensé que se medía a lo largo..." },
+                            { text: "C) Medir desde el ombligo hasta la garganta de la paciente.", correct: false, speechWrong: "¿Hasta la garganta? ¡Tan arriba no llega mi útero!" }
+                        ],
+                        explanation: "La medición longitudinal de la AU va desde el borde superior de la sínfisis púbica hasta la cima del fondo uterino determinado por palpación."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Marcó 27 centímetros mi útero... ¿está creciendo bien?",
+                        prompt: "La Altura Uterina de Andrea mide 27 cm a las 28 semanas. ¿Cómo se interpreta este hallazgo al graficarlo en la curva del carné CLAP?",
+                        options: [
+                            { text: "A) Altura Uterina adecuada para la edad gestacional (se correlaciona estrechamente +/- 2 cm con las semanas).", correct: true, speechCorrect: "¡Genial! 27 cm coincide perfecto con mis 28 semanas.", speechWrong: "¿Retraso de crecimiento? Pero si va casi parejo con la semana..." },
+                            { text: "B) Retraso severo del crecimiento intrauterino.", correct: false, speechWrong: "¿Retraso de crecimiento? Pero si va casi parejo con la semana..." },
+                            { text: "C) Macrosomía fetal marcada.", correct: false, speechWrong: "¿Macrosómico gigante? Tampoco tengo un vientre descomunal..." }
+                        ],
+                        explanation: "Entre las semanas 20 y 34, la medida de la altura uterina en centímetros coincide aproximadamente con el número de semanas de gestación."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Siento sus manitas tocando el fondo de mi panza... ¿qué toca usted?",
+                        prompt: "Realizas las Maniobras de Leopold en la camilla. ¿Qué evalúa la Primera Maniobra de Leopold?",
+                        options: [
+                            { text: "A) Identificar el polo fetal que ocupa el fondo uterino (cefálico o podálico) para determinar la Situación.", correct: true, speechCorrect: "Toca las nalguitas de mi bebé arriba, ¿verdad?", speechWrong: "¿La dilatación? Pero si el cuello está cerrado abajo..." },
+                            { text: "B) Medir la dilatación del cuello uterino.", correct: false, speechWrong: "¿La dilatación? Pero si el cuello está cerrado abajo..." },
+                            { text: "C) Evaluar la presencia de varices en extremidades inferiores.", correct: false, speechWrong: "¿Varices en la panza? Estaba palpando a mi bebé..." }
+                        ],
+                        explanation: "La 1ra Maniobra de Leopold palpa el fondo uterino para distinguir entre las nalgas (blandas e irregulares) o la cabeza (dura y redonda)."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Ahora presiona los costados de mi abdomen...",
+                        prompt: "Continuando en la camilla, ¿qué evalúa la Segunda Maniobra de Leopold?",
+                        options: [
+                            { text: "A) Ubicar la Posición del dorso fetal (derecha e izquierda de la madre) para colocar la campana de Pinard o Doppler.", correct: true, speechCorrect: "Su espalda está hacia mi lado izquierdo, ¡por ahí se oye el corazón!", speechWrong: "¿El peso materno palpando mi panza? La balanza es para eso..." },
+                            { text: "B) Medir el peso materno exacto.", correct: false, speechWrong: "¿El peso materno palpando mi panza? La balanza es para eso..." },
+                            { text: "C) Determinar el color del líquido amniótico.", correct: false, speechWrong: "¿Color del líquido? ¡Eso no se ve palpando por fuera!" }
+                        ],
+                        explanation: "La 2da Maniobra de Leopold identifica el plano firme (espalda/dorso fetal) y las partes pequeñas (miembros) para una auscultación óptima."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ¿cuántas pataditas debo contar en la tarde después de almorzar?",
+                        prompt: "Retornan al escritorio. Andrea pregunta cuántos movimientos fetales debe contar en un periodo de 2 horas tras comer. ¿Qué le enseñas?",
+                        options: [
+                            { text: "A) Percibir al menos 3 a 5 movimientos en 1 hora o 10 movimientos en 2 horas en reposo.", correct: true, speechCorrect: "Contaré hasta 10 pataditas reclinada en mi sillón.", speechWrong: "¿Solo 1 al día? Pero si mi bebito es hiperactivo..." },
+                            { text: "B) Con un solo movimiento al día es más que suficiente.", correct: false, speechWrong: "¿Solo 1 al día? Pero si mi bebito es hiperactivo..." },
+                            { text: "C) Los bebés no deben moverse en absoluto durante el tercer trimestre.", correct: false, speechWrong: "¿No moverse nada? ¡Eso me asustaría muchísimo!" }
+                        ],
+                        explanation: "El conteo materno de movimientos fetales es una prueba sencilla de bienestar fetal: percibir menos de 10 movimientos en 2 horas requiere evaluación."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Si un día no siento a mi bebé en toda la mañana, ¿qué hago?",
+                        prompt: "«Obstetra, ¿qué debo hacer de inmediato si un día noto que mi bebé no se mueve casi nada o sus movimientos bajaron drásticamente?».",
+                        options: [
+                            { text: "A) Acudir de urgencia al establecimiento de salud para un monitoreo fetal electrónico (NST) y evaluación obstétrica.", correct: true, speechCorrect: "Vendré volando a la posta si deja de moverse.", speechWrong: "¿Esperar 3 días? ¡Ni loca arriesgo a mi bebito!" },
+                            { text: "B) Esperar 3 días en cama para ver si vuelve a moverse.", correct: false, speechWrong: "¿Esperar 3 días? ¡Ni loca arriesgo a mi bebito!" },
+                            { text: "C) Tomar pastillas para dormir.", correct: false, speechWrong: "¿Pastillas para dormir? ¡Eso lo sedaría más!" }
+                        ],
+                        explanation: "La disminución franca o ausencia de movimientos fetales es un signo de alarma crítico de compromiso del bienestar fetal."
+                    }
+                ]
+            },
+            {
+                patientName: "Patricia (21 años, 30 sem)",
+                badge: "NIVEL 6: VACUNACIÓN, SUPLEMENTACIÓN Y NUTRICIÓN EN EL EMBARAZO",
+                questions: [
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Ya tengo 30 semanas, ¿ya me pueden poner la vacuna DTaP?",
+                        prompt: "Patricia acude a su control de las 30 semanas. Al revisar su carné de vacunación, verificas que no tiene registrada la vacuna DTaP. ¿A partir de qué semana debe administrarse?",
+                        options: [
+                            { text: "A) Entre las semanas 20 y 36 de gestación (idealmente de la 27 a la 36) para transferir anticuerpos contra la tos ferina al recién nacido.", correct: true, speechCorrect: "Pasemos al tópico de inmunizaciones para mi vacuna DTaP.", speechWrong: "¿Hasta que el bebé tenga 1 año? Pero la necesito ponerle defensas yo..." },
+                            { text: "B) Solo se administra después de que el bebé cumpla 1 año.", correct: false, speechWrong: "¿Hasta que el bebé tenga 1 año? Pero la necesito ponerle defensas yo..." },
+                            { text: "C) Está strictly prohibida durante todo el embarazo.", correct: false, speechWrong: "¿Prohibida? El afiche de la pared dice que protege de tos ferina..." }
+                        ],
+                        explanation: "La vacuna DTaP (Difteria, Tétanos y Pertussis acelular) protege al neonato contra la tos ferina en sus primeros meses de vida."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Doctora, ¿también puedo ponerme la vacuna contra la Influenza y COVID?",
+                        prompt: "Patricia pregunta si también debe recibir la vacuna contra la Influenza y COVID-19. ¿Cuál es la norma oficial del MINSA?",
+                        options: [
+                            { text: "A) Ambas vacunas están indicadas y son totalmente seguras para la gestante en cualquier trimestre de la gestación.", correct: true, speechCorrect: "Aprovecharé el pinchazo para quedar protegida contra la gripe.", speechWrong: "¿Ninguna vacuna? ¡Pensé que el MINSA las recomendaba!" },
+                            { text: "B) No se deben aplicar vacunas bajo ninguna circunstancia.", correct: false, speechWrong: "¿Ninguna vacuna? ¡Pensé que el MINSA las recomendaba!" },
+                            { text: "C) Solo se aplican si la paciente viaja al extranjero.", correct: false, speechWrong: "¿Solo para viajes? Las enfermedades están en todos lados..." }
+                        ],
+                        explanation: "La vacuna contra la Influenza (a partir de las 28 semanas o según campaña) y COVID-19 (desde las 12 semanas) son prioritarias en la gestante."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Tengo que tomar Calcio y Hierro... ¿puedo tomarme las 2 pastillas juntas?",
+                        prompt: "Respecto a la toma de Calcio en el tercer trimestre (1500 a 2000 mg/día), ¿cómo le indicas a Patricia que debe consumirlo respecto al Hierro?",
+                        options: [
+                            { text: "A) Tomarlos por separado (con al menos 2 horas de diferencia) ya que el calcio inhibe la absorción del hierro.", correct: true, speechCorrect: "Hierro en la mañana y Calcio en la tarde, ¡anotado!", speechWrong: "¿Juntas con leche? Escuché que se cortan entre sí..." },
+                            { text: "B) Masticar las dos pastillas juntas con un vaso de leche entera.", correct: false, speechWrong: "¿Juntas con leche? Escuché que se cortan entre sí..." },
+                            { text: "C) Disolver ambas pastillas en café caliente antes del desayuno.", correct: false, speechWrong: "¿Con café caliente? El café bloquea los nutrientes..." }
+                        ],
+                        explanation: "El calcio compite con el hierro en los receptores intestinales; por ello deben ingerirse distanciados por al menos 2 horas."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Mis tobillos se hinchan un poco por las tardes... ¿es normal?",
+                        prompt: "Acompañas a Patricia a la camilla. Evalúas la presencia de edemas en miembros inferiores presionando sobre el maléolo tibial. ¿Cómo distingues un edema fisiológico de uno patológico?",
+                        options: [
+                            { text: "A) El edema fisiológico suele ser leve, vespertino y cede con el reposo con pies elevados; el patológico es súbito, generalizado (cara/manos) o persistente.", correct: true, speechCorrect: "Elevaré las piernas en la tarde para descansar las hinchazones.", speechWrong: "¿Fallo renal? Pero si solo se me hincha el tobillito en la tarde..." },
+                            { text: "B) Todos los edemas en los pies indican fallo renal irreversible.", correct: false, speechWrong: "¿Fallo renal? Pero si solo se me hincha el tobillito en la tarde..." },
+                            { text: "C) Las gestantes nunca deben presentar hinchazón de tobillos.", correct: false, speechWrong: "¿Nunca hinchazón? Casi todas mis amigas embarazadas tenían tobillos hinchados..." }
+                        ],
+                        explanation: "Un edema leve en pies al final del día es común por compresión venosa; si aparece en cara, manos o de forma súbita, alerta sobre preeclampsia."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ¿cuántos vasos de agua debo tomar al día?",
+                        prompt: "De regreso al escritorio, Patricia solicita consejos sobre la ingesta de agua e hidratación. ¿Qué volumen diario de líquidos se recomienda en la gestación?",
+                        options: [
+                            { text: "A) Entre 2.0 a 2.5 litros de agua pura al día para mantener un volumen plasmático adecuado y prevenir infecciones urinarias.", correct: true, speechCorrect: "Llevaré mi toma-todo de 2 litros al trabajo.", speechWrong: "¿Menos de medio litro? Me daría mucha sed e infección a la orina..." },
+                            { text: "B) Menos de medio litro para no llenar la vejiga.", correct: false, speechWrong: "¿Menos de medio litro? Me daría mucha sed e infección a la orina..." },
+                            { text: "C) Exclusivamente bebidas gaseosas o energizantes.", correct: false, speechWrong: "¿Gaseosa? Eso tiene demasiada azúcar..." }
+                        ],
+                        explanation: "Una adecuada hidratación (2 a 2.5 L/día) previene el estreñimiento, disminuye infecciones urinarias y apoya la expansión del volumen sanguíneo."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Quiero comer alimentos con abundante hierro... ¿qué me sugiere?",
+                        prompt: "«Obstetra, ¿qué alimentos ricos en proteínas e hierro debo incluir en mi plato diario?».",
+                        options: [
+                            { text: "A) Sangrecita, hígado, pescado oscuro, carnes rojas y menestras acompañadas de ensaladas con limón.", correct: true, speechCorrect: "¡Prepararé sangrecita con ensalada con limón este fin de semana!", speechWrong: "¿Golosinas y harina? Eso no tiene nada de hierro..." },
+                            { text: "B) Exclusivamente golosinas, harina blanca y gaseosas.", correct: false, speechWrong: "¿Golosinas y harina? Eso no tiene nada de hierro..." },
+                            { text: "C) Evitar todo tipo de carnes y comer solo arroz blanco.", correct: false, speechWrong: "¿Solo arroz? Me quedaría anémica en una semana..." }
+                        ],
+                        explanation: "Alimentos como la sangrecita y el hígado aportan hierro hemo de alta biodisponibilidad para combatir la anemia."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Me cuesta trabajo dormir de costado izquierdo... ¿por qué es tan importante?",
+                        prompt: "«Obstetra, ¿por qué es importante descansar o dormir de costado izquierdo por las noches?».",
+                        options: [
+                            { text: "A) Libera la compresión de la vena cava inferior, mejorando la circulación sanguínea y la oxigenación hacia el bebé.", correct: true, speechCorrect: "Pondré una almohada entre mis rodillas para mantener el lado izquierdo.", speechWrong: "¿Solo postura estética? Siento que mi bebé se mueve más libre así..." },
+                            { text: "B) Es una postura netamente estética sin fundamento médico.", correct: false, speechWrong: "¿Solo postura estética? Siento que mi bebé se mueve más libre así..." },
+                            { text: "C) Evita que el bebé cambie de sexo.", correct: false, speechWrong: "¿Cambiar de sexo? ¡Eso es genético desde la concepción!" }
+                        ],
+                        explanation: "El decúbito lateral izquierdo descomprime la vena cava inferior, optimizando el retorno venoso y el flujo utero-placentario."
+                    }
+                ]
+            },
+            {
+                patientName: "Gabriela (26 años, 32 sem)",
+                badge: "NIVEL 7: RECONOCIMIENTO RÁPIDO DE SIGNOS DE ALARAMA Y URGENCIAS",
+                questions: [
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "¡Ay Obstetra! Me retumba la cabeza muy fuerte y veo lucecitas brillar...",
+                        prompt: "Gabriela ingresa al escritorio caminando despacio y refiere: 'Tengo un dolor de cabeza muy fuerte que no pasa con nada y veo como chispitas de luz'. ¿Cuál es tu sospecha diagnóstica prioritaria?",
+                        options: [
+                            { text: "A) Cefalea migrañosa por estrés leve.", correct: false, speechWrong: "No es migraña común... ¡siento que las luces me encandilan!" },
+                            { text: "B) Signos de Alarma Severos inminentes de Preeclampsia / Compromiso Neurológico.", correct: true, speechCorrect: "¡Ayuda Obstetra! Siento mucha presión en la frente...", speechWrong: "No es migraña común... ¡siento que las luces me encandilan!" },
+                            { text: "C) Fatiga muscular por falta de sueño.", correct: false, speechWrong: "¡No es cansancio! El dolor es insoportable..." }
+                        ],
+                        explanation: "La cefalea persistente, fosfenos (luces) y acúfenos (zumbidos) son síntomas neurosensoriales característicos de la Preeclampsia Severa."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Siento que el corazón me palpita fuerte... ¡midan mi presión rápido!",
+                        prompt: "Llevas a Gabriela inmediatamente a la camilla. Tomas su Presión Arterial y encuentras 160/110 mmHg. ¿Cómo clasificas esta cifra?",
+                        options: [
+                            { text: "A) Hipertensión Severa (Emergencia Obstétrica) que requiere manejo hospitalario inmediato.", correct: true, speechCorrect: "¡160 con 110! Ayúdeme por favor...", speechWrong: "¿Ligeramente elevada? ¡Tengo 160/110 y me zumban los oídos!" },
+                            { text: "B) Presión arterial ligeramente elevada que no necesita intervención.", correct: false, speechWrong: "¿Ligeramente elevada? ¡Tengo 160/110 y me zumban los oídos!" },
+                            { text: "C) Reacción normal ante el cansancio del viaje.", correct: false, speechWrong: "¿Normal? ¡Nunca he tenido la presión en 160!" }
+                        ],
+                        explanation: "PA sistólica ≥ 160 mmHg o diastólica ≥ 110 mmHg constituye una Crisis Hipertensiva en la gestante y requiere tratamiento hipotensor urgente."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Le dio un golpecito en mi rodilla y saltó mi pierna con todo...",
+                        prompt: "En la camilla evalúas la presencia de reflejos osteotendinosos en la rodilla (Reflejo Rotuliano) y notas hiperreflexia (clonus presente). ¿Qué riesgo indica?",
+                        options: [
+                            { text: "A) Alto riesgo inminente de Convulsiones Eclámpticas (Eclampsia).", correct: true, speechCorrect: "¡Protéjanme! No quiero convulsionar...", speechWrong: "¿Excelente estado? Pero si la pierna me saltó de forma exagerada..." },
+                            { text: "B) Excelente estado neurológico y fuerza muscular.", correct: false, speechWrong: "¿Excelente estado? Pero si la pierna me saltó de forma exagerada..." },
+                            { text: "C) Deficiencia severa de potasio.", correct: false, speechWrong: "¿Potasio? Los reflejos saltarines son por irritación nerviosa de la presión..." }
+                        ],
+                        explanation: "La hiperreflexia patelar e irritabilidad neuromuscular en una paciente preeclámptica advierte sobre la inminencia de eclampsia (convulsiones)."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Doctora, ¿qué medicamento me van a colocar en la vía?",
+                        prompt: "De vuelta al escritorio para llenar la hoja de referencia, ¿cuál es la conducta médica de primera línea ante esta Emergencia Obstétrica?",
+                        options: [
+                            { text: "A) Estabilizar con Sulfato de Magnesio (prevención de convulsiones) + Hipotensor (Nifedipino) y derivar de urgencia a un Hospital de mayor resolución.", correct: true, speechCorrect: "Acepto la vía con Sulfato de Magnesio para no convulsionar en la ambulancia.", speechWrong: "¿Irme a mi casa? ¡Con 160/110 me puedo morir en casa!" },
+                            { text: "B) Enviarla a su domicilio con indicación de reposo en penumbra.", correct: false, speechWrong: "¿Irme a mi casa? ¡Con 160/110 me puedo morir en casa!" },
+                            { text: "C) Darle infusiones herbales y programar control en 15 días.", correct: false, speechWrong: "¿Agua de hierbas? ¡Esto es una urgencia médica grave!" }
+                        ],
+                        explanation: "El Sulfato de Magnesio es el anticonvulsivante de elección para la preeclampsia severa/eclampsia, requiriendo transporte asistido inmediato."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Si me sale agua transparente con olor a lejía por la vagina, ¿qué es?",
+                        prompt: "Aprovechas para repasar otros Signos de Alarma. Si una gestante refiere pérdida de líquido transparente con olor a lejía por la vagina, ¿qué sospechas?",
+                        options: [
+                            { text: "A) Ruptura Prematura de Membranas (RPM), que requiere evaluación inmediata para prevenir infección amniótica.", correct: true, speechCorrect: "Entendido: líquido con olor a lejía es bolsa rota.", speechWrong: "¿Pérdida de orina? No, el olor a lejía es clarísimo..." },
+                            { text: "B) Pérdida involuntaria de orina completamente normal.", correct: false, speechWrong: "¿Pérdida de orina? No, el olor a lejía es clarísimo..." },
+                            { text: "C) Tapón mucoso fisiológico sin trascendencia.", correct: false, speechWrong: "¿Tapón mucoso? El tapón es espeso como moco, no chorro de agua..." }
+                        ],
+                        explanation: "La pérdida de líquido amniótico por vagina indica RPM; requiere corroboración inmediata y seguimiento por riesgo de corioamnionitis."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ¿y si me sale sangre roja brillante pero sin dolor?",
+                        prompt: "«Obstetra, si presento sangrado vaginal rojo rutilante sin dolor abdominal en el tercer trimestre, ¿qué complicación puede ser?».",
+                        options: [
+                            { text: "A) Sospecha de Placenta Previa, requiriendo reposo, ecografía de urgencia y no realizar tacto vaginal.", correct: true, speechCorrect: "Anotado: Placenta Previa, nada de tacto vaginal.", speechWrong: "¿Menstruación? ¡No se menstrua durante el embarazo!" },
+                            { text: "B) Inicio normal de la menstruación.", correct: false, speechWrong: "¿Menstruación? ¡No se menstrua durante el embarazo!" },
+                            { text: "C) Infección micótica leve.", correct: false, speechWrong: "¿Hongos? Los hongos dan picazón, no sangrado rojo vivo..." }
+                        ],
+                        explanation: "El sangrado indoloro de sangre roja brillante sugiere Placenta Previa. Está contraindicado el tacto vaginal por riesgo de hemorragia masiva."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Si la panza se me pone dura como madera y me duele horrible con sangrado...",
+                        prompt: "«Obstetra, ¿y si el sangrado vaginal viene acompañado de dolor abdominal intenso tipo contracción sostenida ('vientre de madera')?».",
+                        options: [
+                            { text: "A) Desprendimiento Prematuro de Placenta (DPP), una emergencia médica grave que amenaza la vida fetal y materna.", correct: true, speechCorrect: "¡DPP es gravísimo! Correré a emergencias si la panza se endurece con dolor.", speechWrong: "¿Gases? Los gases no ponen la barriga dura como piedra ni sangran..." },
+                            { text: "B) Gases o indigestión leve.", correct: false, speechWrong: "¿Gases? Los gases no ponen la barriga dura como piedra ni sangran..." },
+                            { text: "C) Movimiento fetal brusco sin riesgo.", correct: false, speechWrong: "¿Un patadón del bebé? Un patadón no causa sangrado genital..." }
+                        ],
+                        explanation: "El DPP se manifiesta con hipertonía uterina dolorosa y sangrado genital oscuro; exige evacuación hospitalaria inmediata."
+                    }
+                ]
+            },
+            {
+                patientName: "Karina (26 sem)",
+                badge: "NIVEL 8: EDUCACIÓN PRENATAL Y PSICOPROFILAXIS OBSTÉTRICA",
+                questions: [
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Tengo mucho miedo al parto... me dijeron que se sufre demasiado...",
+                        prompt: "Karina acude al escritorio confesando sentir mucho miedo al dolor del parto por comentarios que escuchó en su comunidad. ¿Cuál es tu actitud como Obstetra?",
+                        options: [
+                            { text: "A) Brindar una escucha empática, validar sus emociones, desmitificar falsas creencias e inscribirla en las sesiones de Psicoprofilaxis Obstétrica.", correct: true, speechCorrect: "Me siento muy aliviada y escuchada. ¡Inscríbame a las clases de preparación!", speechWrong: "¿Decirme que es tonto mi miedo? Me hace sentir avergonzada..." },
+                            { text: "B) Decirle que sus miedos son tontos y que no debería preocuparse.", correct: false, speechWrong: "¿Decirme que es tonto mi miedo? Me hace sentir avergonzada..." },
+                            { text: "C) Recomendarle que programe una cesárea electiva privada sin indicación médica.", correct: false, speechWrong: "¿Cesárea privada? No tengo dinero para una clínica..." }
+                        ],
+                        explanation: "La comunicación asertiva y la Psicoprofilaxis brindan preparación física, teórica y psicoafectiva para lograr un parto seguro y libre de temor."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ¿cuántas clases de Psicoprofilaxis debo llevar?",
+                        prompt: "Karina consulta cuántas sesiones de Psicoprofilaxis Obstétrica comprende el programa estándar del Centro de Salud San Antonio Abad.",
+                        options: [
+                            { text: "A) Se recomiendan un mínimo de 6 sesiones teórico-prácticas a partir de las 20-24 semanas de gestación.", correct: true, speechCorrect: "Asistiré a las 6 sesiones semanales con mi pareja.", speechWrong: "¿Solo 5 minutos antes de dar a luz? Así no aprendería a respirar..." },
+                            { text: "B) Solamente una charla rápida de 5 minutos el día antes del parto.", correct: false, speechWrong: "¿Solo 5 minutos antes de dar a luz? Así no aprendería a respirar..." },
+                            { text: "C) Son 30 sesiones obligatorias todos los días.", correct: false, speechWrong: "¿Todos los días? Por mi trabajo no podría acudir a tantas..." }
+                        ],
+                        explanation: "El programa estándar del MINSA consta de 6 sesiones integrales que abordan cambios gestacionales, ejercicios de gimnasia obstétrica y trabajo de parto."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Enséñeme cómo respirar en la camilla durante las contracciones fuertes.",
+                        prompt: "Pasas a Karina a la camilla para enseñarle técnicas de relajación y respiración. ¿Qué tipo de respiración se promueve durante la fase de contracciones uterinas intensas?",
+                        options: [
+                            { text: "A) Respiración profunda y jadear/soplar suavemente según el pico de la contracción para oxigenar al feto.", correct: true, speechCorrect: "Tomar aire por la nariz y soplar suavemente como vela... ¡Siento paz!", speechWrong: "¿Aguantar el aire 2 minutos? ¡Me sofocaría y a mi bebé le faltaría aire!" },
+                            { text: "B) Aguantar la respiración (apnea prolongada) durante más de 2 minutos continuamente.", correct: false, speechWrong: "¿Aguantar el aire 2 minutos? ¡Me sofocaría y a mi bebé le faltaría aire!" },
+                            { text: "C) Respiración rápida e hiperventilación descontrolada.", correct: false, speechWrong: "¿Hiperventilar rápido? Me daría mareo y hormigueo..." }
+                        ],
+                        explanation: "La respiración rítmica abdominal y el jadeo controlado previenen la hiperventilación y garantizan un aporte continuo de oxígeno al feto durante la contracción."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Mi esposo vino conmigo... ¿él también puede participar?",
+                        prompt: "En la camilla de exploración le enseñas a su pareja o acompañante a realizar masajes lumbares. ¿Cuál es el objetivo principal del acompañamiento?",
+                        options: [
+                            { text: "A) Promover el Parto con Acompañante, brindando soporte emocional continuo y alivio no farmacológico del dolor.", correct: true, speechCorrect: "¡Mi esposo está feliz de aprender a darme masajes lumbares!", speechWrong: "¿Solo un trámite? Su presencia me da muchísima fuerza..." },
+                            { text: "B) Cumplir un requisito puramente administrativo del establecimiento.", correct: false, speechWrong: "¿Solo un trámite? Su presencia me da muchísima fuerza..." },
+                            { text: "C) Sustituir la labor del equipo profesional de obstetricia.", correct: false, speechWrong: "Él no es médico u obstetra, solo me dará apoyo con masajes..." }
+                        ],
+                        explanation: "El acompañamiento elegido durante el trabajo de parto disminuye la ansiedad, reduce el uso de analgesia y mejora la satisfacción materna."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Escuché sobre el Contacto Piel a Piel apenas nazca mi hijito...",
+                        prompt: "De vuelta al escritorio, le explicas a Karina los beneficios del Contacto Piel a Piel inmediato al nacer. ¿Cuánto tiempo mínimo debe durar?",
+                        options: [
+                            { text: "A) Un mínimo de 60 minutos ininterrumpidos en el pecho materno para afianzar el apego seguro y la lactancia precoz.", correct: true, speechCorrect: "Una hora enterita acurrucado en mi pecho desnudo... ¡qué maravilloso!", speechWrong: "¿Solo 10 segundos para la foto? ¡Quiero sentir su calor en mi pecho!" },
+                            { text: "B) Solo 10 segundos para tomarle una foto y luego retirarlo a la cuna.", correct: false, speechWrong: "¿Solo 10 segundos para la foto? ¡Quiero sentir su calor en mi pecho!" },
+                            { text: "C) No se recomienda el contacto directo el primer día.", correct: false, speechWrong: "¿No tocarlo el primer día? Pero si el bebé reconoce mi voz y mi olor..." }
+                        ],
+                        explanation: "El contacto piel a piel precoz durante al menos 1 hora continua favorece la termorregulación, estabiliza la glucosa del RN e inicia la lactancia materna."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "En la sala de psicoprofilaxis vi unas pelotas gigantes de colores...",
+                        prompt: "«Obstetra, ¿cuál es el beneficio de realizar los ejercicios de esferodinamia (balón terapéutico)?».",
+                        options: [
+                            { text: "A) Ayudan a flexibilizar los músculos del suelo pélvico y favorecen el descenso y encaje de la cabeza fetal.", correct: true, speechCorrect: "Me sentaré en el balón para hacer círculos con la cadera.", speechWrong: "¿Solo para jugar? Pensé que ayudaba a la pelvis..." },
+                            { text: "B) Sirven únicamente como juego de entretenimiento.", correct: false, speechWrong: "¿Solo para jugar? Pensé que ayudaba a la pelvis..." },
+                            { text: "C) Aceleran el crecimiento de las uñas.", correct: false, speechWrong: "¿Para las uñas? ¡Hablaba de la movilidad de la pelvis!" }
+                        ],
+                        explanation: "La esferodinamia y movilidad pélvica durante la psicoprofilaxis alivian la lumbalgia y ayudan al encajamiento fetal."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ¿cuándo debo empezar a pujar durante el parto?",
+                        prompt: "«Obstetra, ¿qué es la Técnica de Pujos Dirigidos y cuándo debe aplicarse?».",
+                        options: [
+                            { text: "A) Pujos coordinados con las contracciones únicamente durante la fase expulsiva del parto (dilatación completa de 10 cm).", correct: true, speechCorrect: "Pujaré solo cuando me confirmen 10 cm de dilatación.", speechWrong: "¿Pujar desde la semana 30? ¡Podría romper mi bolsa antes de tiempo!" },
+                            { text: "B) Pujos intensos desde la semana 30 de gestación en casa.", correct: false, speechWrong: "¿Pujar desde la semana 30? ¡Podría romper mi bolsa antes de tiempo!" },
+                            { text: "C) Pujar intermitentemente durante el primer trimestre.", correct: false, speechWrong: "¿Pujar en el primer trimestre? ¡Eso provocaría un aborto!" }
+                        ],
+                        explanation: "Pujar solo cuando exista dilatación completa (10 cm) previene desgarros perineales y edema del cuello uterino."
+                    }
+                ]
+            },
+            {
+                patientName: "Sofía (32 años, 36 sem)",
+                badge: "NIVEL 9: ELABORACIÓN DEL PLAN DE PARTO Y PREPARACIÓN DEL NACIMIENTO",
+                questions: [
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Llegué a las 36 semanas... ¡es momento de llenar mi Plan de Parto!",
+                        prompt: "Sofía se sienta en tu escritorio a sus 36 semanas para revisar su Plan de Parto. ¿Qué es el Plan de Parto según el MINSA?",
+                        options: [
+                            { text: "A) Un instrumento de consenso entre la gestante, su familia y el equipo de salud para planificar la atención oportuna del parto y emergencias.", correct: true, speechCorrect: "Llenaremos con mi familia todos los datos para prevenir demoras.", speechWrong: "¿Un contrato para comprar ropa? Pensé que era para la atención de salud..." },
+                            { text: "B) Un contrato para comprar los pañales y la ropa del bebé.", correct: false, speechWrong: "¿Un contrato para comprar ropa? Pensé que era para la atención de salud..." },
+                            { text: "C) Una encuesta estadística sobre nombres favoritos para el recién nacido.", correct: false, speechWrong: "¿Sobre nombres? Es una estrategia seria del MINSA..." }
+                        ],
+                        explanation: "El Plan de Parto organiza la toma de decisiones: establecimiento de destino, medio de transporte, potenciales donantes de sangre y acompañante elegido."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Vivo a 45 minutos del Centro de Salud San Antonio Abad...",
+                        prompt: "Al completar el módulo de transporte en el Plan de Parto, Sofía vive a 45 minutos del centro de salud. ¿Qué previsión debe dejarse registrada?",
+                        options: [
+                            { text: "A) Identificar el vehículo disponible las 24 horas, la ruta de viaje y los contactos de emergencia de la comunidad.", correct: true, speechCorrect: "El vecino Don Pedro puso su mototaxi a disposición las 24 horas.", speechWrong: "¿Caminar 45 minutos sola con contracciones? No llegaría..." },
+                            { text: "B) Sugerirle que camine sola cuando comiencen las contracciones sin importar la hora.", correct: false, speechWrong: "¿Caminar 45 minutos sola con contracciones? No llegaría..." },
+                            { text: "C) Esperar a que el bebé nazca en casa para recién buscar movilidad.", correct: false, speechWrong: "¿Nacer en casa? Prefiero dar a luz segura en la posta con profesionales..." }
+                        ],
+                        explanation: "Planificar con anticipación la logística de transporte reduce la segunda demora (retraso en alcanzar el establecimiento de salud con capacidad resolutiva)."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Toque mi panza en la camilla... ¿mi bebé está de cabeza?",
+                        prompt: "Acompañas a Sofía a la camilla. Evalúas la posición del bebé mediante las Maniobras de Leopold a las 36 semanas. ¿Cuál es la presentación fetal óptima para un parto vaginal?",
+                        options: [
+                            { text: "A) Presentación Cefálica (cabeza abocada en la pelvis materna).", correct: true, speechCorrect: "¡Qué felicidad! Su cabecita está lista abajo encajada.", speechWrong: "¿De nalgas es lo óptimo? Tenía entendido que de nalgas es más complejo..." },
+                            { text: "B) Presentación Podálica o de nalgas.", correct: false, speechWrong: "¿De nalgas es lo óptimo? Tenía entendido que de nalgas es más complejo..." },
+                            { text: "C) Situación Transversa estricta.", correct: false, speechWrong: "¿Cruzado de costado? Atravesado no cabe por la pelvis..." }
+                        ],
+                        explanation: "La presentación cefálica bien flectada es la presentación fisiológica óptima para desencadenar el mecanismo del parto vaginal."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Obstetra, ¿cómo reconoceré que ya estoy en trabajo de parto verdadero?",
+                        prompt: "En la camilla verificas que no exista pérdida de sangre ni líquido. Le explicas a Sofía cómo reconocer el inicio verdadero del Trabajo de Parto. ¿Cuáles son sus características?",
+                        options: [
+                            { text: "A) Contracciones uterinas rítmicas, progresivas e intensas (2 a 3 en 10 minutos) acompañadas de borramiento y dilatación del cérvix.", correct: true, speechCorrect: "Si me dan 3 dolores fuertes en 10 minutos que van aumentando, vendré inmediatamente.", speechWrong: "¿Pinchazos aislados? Esos los he tenido y se pasan rápido..." },
+                            { text: "B) Pinchazos aislados en el estómago que desaparecen al cambiar de posición.", correct: false, speechWrong: "¿Pinchazos aislados? Esos los he tenido y se pasan rápido..." },
+                            { text: "C) Dolor de cabeza persistente sin dinámica uterina.", correct: false, speechWrong: "¿Dolor de cabeza? Eso es signo de presión alta, no parto..." }
+                        ],
+                        explanation: "El trabajo de parto verdadero se caracteriza por contracciones uterinas regulares que aumentan en frecuencia e intensidad y producen modificaciones cervicales."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "En la hoja del Plan de Parto piden 2 personas como voluntarios de sangre...",
+                        prompt: "De regreso al escritorio, registras en el carné la indicación de dos donantes de sangre voluntarios. ¿Por qué se solicita este requisito en el Plan de Parto?",
+                        options: [
+                            { text: "A) Como medida de previsión crítica ante la posibilidad imprevista de una Hemorragia Posparto.", correct: true, speechCorrect: "Mi hermano y mi primo vendrán a registrar su grupo de sangre por prevención.", speechWrong: "¿Vender la sangre? El centro de salud no lucra con eso..." },
+                            { text: "B) Es un trámite burocrático para vender la sangre en el banco de sangre.", correct: false, speechWrong: "¿Vender la sangre? El centro de salud no lucra con eso..." },
+                            { text: "C) Solo se solicita a pacientes que van a someterse a cirugía plástica.", correct: false, speechWrong: "¿Cirugía plástica? Estoy preparando mi parto..." }
+                        ],
+                        explanation: "La hemorragia obstétrica es una de las principales causas de morbimortalidad materna; contar con donantes tipificados garantiza respuesta rápida ante emergencias."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Doctora, ¿qué cosas debo empacar en mi bolso para la posta?",
+                        prompt: "«Obstetra, ¿qué cosas esenciales debo tener listas en la maleta para llevar al establecimiento de salud?».",
+                        options: [
+                            { text: "A) DNI, carné perinatal CLAP, ropa limpia para el recién nacido (muda completa de algodón), pañales y útiles de aseo personal.", correct: true, speechCorrect: "Iré a dejar preparada la maletita al costado de mi cama.", speechWrong: "¿Solo juguetes? ¡Necesito pañales y mi DNI!" },
+                            { text: "B) Únicamente artefactos eléctricos o juguetes.", correct: false, speechWrong: "¿Solo juguetes? ¡Necesito pañales y mi DNI!" },
+                            { text: "C) No es necesario llevar nada.", correct: false, speechWrong: "¿Nada? ¿Y con qué vista al bebé al nacer?" }
+                        ],
+                        explanation: "Tener el bolso del parto listo a partir de las 36 semanas evita demoras innecesarias al momento de acudir por inicio del trabajo de parto."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "En mi comunidad acostumbran dar a luz en posición vertical de cuclillas...",
+                        prompt: "«Obstetra, ¿puedo elegir la posición de mi parto (como el Parto Vertical) en este establecimiento de salud?».",
+                        options: [
+                            { text: "A) Sí, se respeta el Parto con Adecuación Intercultural y la posición de preferencia (vertical, en cuclillas o horizontal) según la guía MINSA.", correct: true, speechCorrect: "¡Me alegra tanto saber que respetan nuestras costumbres ancestrales!", speechWrong: "¿Obligatorio acostada? La guía MINSA permite elegir la postura..." },
+                            { text: "B) No, la posición acostada boca arriba es obligatoria por ley.", correct: false, speechWrong: "¿Obligatorio acostada? La guía MINSA permite elegir la postura..." },
+                            { text: "C) El parto solo se realiza en el agua.", correct: false, speechWrong: "¿Solo en agua? Aquí en el centro de salud tenemos la sala equipada..." }
+                        ],
+                        explanation: "El MINSA promueve la atención del parto con adecuación intercultural, permitiendo a la gestante elegir la postura que le brinde mayor comodidad."
+                    }
+                ]
+            },
+            {
+                patientName: "Mónica (Puerperio / Recién Nacido)",
+                badge: "NIVEL 10: CONSEJERÍA EN PLANIFICACIÓN FAMILIAR Y PUERPERIO SEGURO",
+                questions: [
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ya pasaron 10 días desde que nació mi bebito...",
+                        prompt: "Mónica acude a su control posparto (Puerperio) a los 10 días de haber dado a luz. ¿Cuáles son los aspectos fundamentales a evaluar en el escritorio?",
+                        options: [
+                            { text: "A) Estado afectivo materno, evolución de la lactancia, involución uterina, características de los loquios y método anticonceptivo elegido.", correct: true, speechCorrect: "Le contaré cómo voy dando de mamar y cómo me siento de ánimo.", speechWrong: "¿Solo mi trabajo? Me importa saber si mi cuerpo se está recuperando bien..." },
+                            { text: "B) Preguntarle únicamente sobre sus actividades laborales futuras.", correct: false, speechWrong: "¿Solo mi trabajo? Me importa saber si mi cuerpo se está recuperando bien..." },
+                            { text: "C) Indicarle dieta estricta de 500 calorías al día.", correct: false, speechWrong: "¿Dieta de 500 calorías? ¡Necesito nutrirme para producir leche!" }
+                        ],
+                        explanation: "La atención del puerperio evalúa la recuperación biológica y psicosocial de la madre, previniendo infecciones puerperales y promoviendo la lactancia."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Por favor revise mi vientre en la camilla a ver si ya bajó la panza...",
+                        prompt: "Acompañas a Mónica a la camilla para la exploración física. Palpas el abdomen para medir la Involución Uterina a los 10 días del parto. ¿Dónde debe ubicarse el fondo uterino?",
+                        options: [
+                            { text: "A) A nivel intrapélvico/sínfisis del pubis, habiendo descendido aproximadamente 1 cm por día.", correct: true, speechCorrect: "¡Qué bien! Mi útero ya volvió a guardarse dentro de la pelvis.", speechWrong: "¿Encima del ombligo? ¡Eso significaría que no ha bajado nada!" },
+                            { text: "B) Por encima del ombligo, igual que a las 30 semanas de gestación.", correct: false, speechWrong: "¿Encima del ombligo? ¡Eso significaría que no ha bajado nada!" },
+                            { text: "C) En la fosa ilíaca derecha exclusivamente.", correct: false, speechWrong: "¿Solo a la derecha? La matriz desciende centrada..." }
+                        ],
+                        explanation: "El útero involuciona a razón de 1 cm diario tras el parto. A los 10-12 días se vuelve un órgano pélvico difícil de palpar por encima del pubis."
+                    },
+                    {
+                        reqPosition: "bed",
+                        promptSpeech: "Mis loquios o sangrado del posparto ya están de color clarito...",
+                        prompt: "En la camilla examinas los loquios (secreción vaginal posparto) a los 10 días. ¿Qué características indican un proceso Fisiológico normal?",
+                        options: [
+                            { text: "A) Loquios serosos o amarillentos (Loquia serosa/alba), sin mal olor y en cantidad decreciente.", correct: true, speechCorrect: "Cambiaron a tono amarillento y ya casi no mancho las toallas.", speechWrong: "¿Sangrado rojo vivo abundante? Eso sería una hemorragia..." },
+                            { text: "B) Sangrado rojo rutilante abundante con coágulos gigantes y fétidos.", correct: false, speechWrong: "¿Sangrado rojo vivo abundante? Eso sería una hemorragia..." },
+                            { text: "C) Pus verde abundante con fiebre de 39°C.", correct: false, speechWrong: "¿Pus con fiebre? Eso es infección severa..." }
+                        ],
+                        explanation: "Los loquios evolucionan de rojos (rubra) a serosos y blancos (alba) en 2 semanas. El mal olor o sangrado profuso sugiere endometritis o restos placentarios."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Quiero cuidarme con un método que no le corte la leche a mi bebé...",
+                        prompt: "De vuelta al escritorio, Mónica recibe consejería en Planificación Familiar. Ella desea un método anticonceptivo compatible con la Lactancia Materna Exclusiva. ¿Qué opción le recomiendas?",
+                        options: [
+                            { text: "A) Métodos con Progestágeno solo (Inyectable trimestral de Depo-Provera, Implante subdérmico o DIU T de Cobre).", correct: true, speechCorrect: "Me colocaré la ampolla de 3 meses para dar lactancia tranquila.", speechWrong: "¿Pastillas combinadas? Me dijeron que los estrógenos bajan la leche..." },
+                            { text: "B) Anticonceptivos orales combinados con estrógenos a altas dosis.", correct: false, speechWrong: "¿Pastillas combinadas? Me dijeron que los estrógenos bajan la leche..." },
+                            { text: "C) Ningún método, debe esperar 3 años para cuidarse.", correct: false, speechWrong: "¿Esperar 3 años? ¡Me puedo embarazar antes de tiempo!" }
+                        ],
+                        explanation: "Los métodos con progestágeno solo o el DIU no interfieren con la cantidad ni calidad de la leche materna durante la lactancia."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Escuché del método MELA con lactancia materna...",
+                        prompt: "Mónica consulta sobre el método MELA (Lactancia Materna y Amenorrea). ¿Cuáles son sus 3 condiciones indispensables para ser efectivo?",
+                        options: [
+                            { text: "A) Lactancia materna exclusiva a libre demanda, amenorrea (sin regla) y bebé menor de 6 meses de edad.", correct: true, speechCorrect: "Mientras cumpla esas 3 reglas, el MELA me protegerá.", speechWrong: "¿Dar biberón? Si le doy biberón el MELA pierde efectividad..." },
+                            { text: "B) Dar biberón 3 veces al día y usar cremas corporales.", correct: false, speechWrong: "¿Dar biberón? Si le doy biberón el MELA pierde efectividad..." },
+                            { text: "C) Bebé mayor de 1 año comiendo sólidos.", correct: false, speechWrong: "¿Bebé mayor de 1 año? A esa edad ya no protege como anticonceptivo..." }
+                        ],
+                        explanation: "El MELA tiene más de 98% de eficacia si se cumplen strictly sus 3 pilares: amenorrea, lactancia exclusiva y menos de 6 meses de vida."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "Obstetra, ¿por qué síntomas debería volver volando de urgencia?",
+                        prompt: "Para finalizar, le explicas los Signos de Alarma en el Puerperio por los que debe acudir de inmediato por urgencias. ¿Cuáles identificas?",
+                        options: [
+                            { text: "A) Fiebre ≥ 38°C, sangrado vaginal profuso, loquios con mal olor, dolor mamario intenso con enrojecimiento o dolor de cabeza severo.", correct: true, speechCorrect: "Si me da fiebre o sangrado abundante vendré a la posta de inmediato.", speechWrong: "¿Cansancio por amamantar? Eso es normal por las desveladas..." },
+                            { text: "B) Cansancio ligero tras amamantar de noche.", correct: false, speechWrong: "¿Cansancio por amamantar? Eso es normal por las desveladas..." },
+                            { text: "C) Sed moderada al despertar.", correct: false, speechWrong: "¿Sed? La sed es normal por producir leche..." }
+                        ],
+                        explanation: "Fiebre, hemorragia, secreción fétida o mastitis son signos de complicación severa que requieren diagnóstico y antibioticoterapia oportuna."
+                    },
+                    {
+                        reqPosition: "desk",
+                        promptSpeech: "A veces me duele el pezón al dar de mamar... ¿cómo es el acople correcto?",
+                        prompt: "«Obstetra, ¿cuál es la mejor técnica para un agarre correcto del bebé al amamantar y evitar grietas en el pezón?».",
+                        options: [
+                            { text: "A) Boca bien abierta del bebé abarcando casi toda la areola, labios evertidos (hacia afuera) y barbilla pegada al pecho.", correct: true, speechCorrect: "¡Acomodaré su boquita abierta para agarrar toda la areola!", speechWrong: "¿Chupar solo la punta? ¡Así es como se agrietan los pezones!" },
+                            { text: "B) Que el bebé chupe únicamente la punta del pezón con la boca semi-cerrada.", correct: false, speechWrong: "¿Chupar solo la punta? ¡Así es como se agrietan los pezones!" },
+                            { text: "C) Dar de mamar acostados en la oscuridad sin mirar al bebé.", correct: false, speechWrong: "¿Sin mirarlo? La postura y la mirada son claves..." }
+                        ],
+                        explanation: "El acople profundo con boca bien abierta abarcando la areola garantiza una succión efectiva sin producir dolor o grietas en los pezones."
+                    }
+                ]
+            }
+        ];
+
+        function loadCurrentLevelState() {
+            const levelData = gameLevels[currentLevelIndex];
+            const questionData = levelData.questions[currentQuestionIndex];
+
+            document.getElementById('levelBadge').textContent = `NIVEL ${currentLevelIndex + 1} DE ${gameLevels.length}`;
+            document.getElementById('patientLevelTitle').textContent = `Atención: ${levelData.patientName}`;
+            document.getElementById('patientNameHeader').textContent = `Paciente: ${levelData.patientName}`;
+            document.getElementById('caseBadgeText').textContent = levelData.badge;
+            document.getElementById('patientAvatarName').textContent = levelData.patientName.split(' ')[0];
+
+            document.getElementById('questionCounterBadge').textContent = `${currentQuestionIndex + 1} de ${levelData.questions.length}`;
+
+            const levelWeight = 100 / gameLevels.length;
+            const subProgress = (currentQuestionIndex / levelData.questions.length) * levelWeight;
+            const totalProgress = (currentLevelIndex * levelWeight) + subProgress;
+            document.getElementById('progressBar').style.width = `${totalProgress}%`;
+
+            if (currentQuestionIndex === 0) {
+                currentPatientPosition = 'door';
+                updateAvatarPosition('door');
+                hideSpeechBubble();
+                document.getElementById('patientStatusBadge').innerHTML = `<i class="fa-solid fa-door-closed mr-1"></i> Esperando en Puerta`;
+                document.getElementById('patientStatusBadge').className = 'bg-amber-950 text-amber-300 border border-amber-800 px-3 py-1 rounded-full text-xs font-semibold';
+
+                document.getElementById('btnCallPatient').disabled = false;
+                document.getElementById('btnCallPatient').className = "bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all border border-amber-400 pulse-subtle";
+
+                document.getElementById('btnDesk').disabled = true;
+                document.getElementById('btnDesk').className = "bg-slate-800 text-slate-500 font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all border border-transparent";
+
+                document.getElementById('btnBed').disabled = true;
+                document.getElementById('btnBed').className = "bg-slate-800 text-slate-500 font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all border border-transparent";
+
+                document.getElementById('patientDialogueText').innerHTML = `La paciente <strong class="text-rose-300">${levelData.patientName}</strong> ha llegado al consultorio del Centro de Salud. Haz clic en el botón <strong class="text-amber-400">"1. Hacer Pasar"</strong> para hacerla ingresar.`;
+            } else {
+                document.getElementById('btnCallPatient').disabled = true;
+                document.getElementById('btnCallPatient').classList.remove('pulse-subtle');
+                document.getElementById('btnCallPatient').className = "bg-slate-800 text-slate-500 font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all border border-transparent";
+
+                if (questionData.reqPosition === 'desk') {
+                    document.getElementById('btnDesk').disabled = false;
+                    document.getElementById('btnDesk').className = "bg-rose-700 hover:bg-rose-600 text-white font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all border border-rose-400 pulse-subtle";
+                    document.getElementById('btnBed').disabled = true;
+                    document.getElementById('btnBed').className = "bg-slate-800 text-slate-500 font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all border border-transparent";
+
+                    if (currentPatientPosition === 'desk') {
+                        showQuestionUI(questionData);
+                    } else {
+                        hideSpeechBubble();
+                        document.getElementById('patientDialogueText').innerHTML = `Para continuar con la pregunta ${currentQuestionIndex + 1}, pide a <strong class="text-rose-300">${levelData.patientName}</strong> que regrese y se ubique en <strong class="text-rose-400">"2. Sentarse al Escritorio"</strong>.`;
+                    }
+                } else if (questionData.reqPosition === 'bed') {
+                    document.getElementById('btnBed').disabled = false;
+                    document.getElementById('btnBed').className = "bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg transition-all border border-amber-400 pulse-subtle";
+                    document.getElementById('btnDesk').disabled = true;
+                    document.getElementById('btnDesk').className = "bg-slate-800 text-slate-500 font-bold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 opacity-50 cursor-not-allowed transition-all border border-transparent";
+
+                    if (currentPatientPosition === 'bed') {
+                        showQuestionUI(questionData);
+                    } else {
+                        hideSpeechBubble();
+                        document.getElementById('patientDialogueText').innerHTML = `Esta evaluación requiere examen físico. Pide a la paciente <strong class="text-rose-300">${levelData.patientName}</strong> que pase a <strong class="text-amber-400">"3. Pasar a Camilla"</strong>.`;
+                    }
+                }
+            }
+        }
+
+        function evaluateAnswer(selectedOpt, qData) {
+            if (answeredCurrentQuestion) return;
+            answeredCurrentQuestion = true;
+
+            const feedbackBox = document.getElementById('feedbackBox');
+            const feedbackHeader = document.getElementById('feedbackHeader');
+            const feedbackText = document.getElementById('feedbackText');
+            const btnNext = document.getElementById('btnNextAction');
+
+            feedbackBox.classList.remove('hidden');
+
+            if (selectedOpt.correct) {
+                playSound('correct');
+                score += 10;
+                document.getElementById('scoreText').textContent = `${score} PTS`;
+                feedbackHeader.className = "font-bold text-emerald-400 flex items-center gap-2 text-xs mb-1";
+                feedbackHeader.innerHTML = `<i class="fa-solid fa-circle-check text-base"></i> ¡Respuesta Correcta! (+10 Puntos)`;
+                
+                showSpeechBubble(selectedOpt.speechCorrect || "¡Entendido Obstetra, muchas gracias!");
+            } else {
+                playSound('wrong');
+                lives -= 1;
+                updateLivesUI();
+                feedbackHeader.className = "font-bold text-rose-400 flex items-center gap-2 text-xs mb-1";
+                feedbackHeader.innerHTML = `<i class="fa-solid fa-circle-xmark text-base"></i> Respuesta Incorrecta (-1 Vida)`;
+                
+                showSpeechBubble(selectedOpt.speechWrong || "¿Está segura, Obstetra? Me genera dudas...");
+
+                if (lives <= 0) {
+                    alert("¡Turno terminado! Has perdido todas tus vidas. Reiniciando la atención desde el Nivel 1...");
+                    resetGame();
+                    return;
+                }
+            }
+
+            feedbackText.textContent = qData.explanation;
+            btnNext.classList.remove('hidden');
+
+            const levelData = gameLevels[currentLevelIndex];
+            if (currentQuestionIndex < levelData.questions.length - 1) {
+                btnNext.querySelector('span').textContent = `Siguiente Pregunta del Caso (${currentQuestionIndex + 2} de ${levelData.questions.length})`;
+            } else {
+                btnNext.querySelector('span').textContent = `Finalizar Consulta de ${levelData.patientName.split(' ')[0]} y Despedir Paciente`;
+            }
+
+            const buttons = document.querySelectorAll('#optionsGrid button');
+            buttons.forEach(b => b.disabled = true);
+        }
+
+        function advanceStepOrPatient() {
+            const levelData = gameLevels[currentLevelIndex];
+
+            if (currentQuestionIndex < levelData.questions.length - 1) {
+                currentQuestionIndex++;
+                loadCurrentLevelState();
+            } else {
+                // Farewell speech on full consultation end
+                showSpeechBubble("¡Muchas gracias por todo Obstetra Mariel, nos vemos en mi próximo control!");
+                
+                setTimeout(() => {
+                    if (currentLevelIndex < gameLevels.length - 1) {
+                        currentLevelIndex++;
+                        currentQuestionIndex = 0;
+                        loadCurrentLevelState();
+                    } else {
+                        alert(`¡FELICIDADES OBSTETRA MARIEL ESTRELLA!\n\nHas completado con éxito todas las atenciones prenatales en el Centro de Salud San Antonio Abad.\n\nPuntaje Final Obtenido: ${score} Puntos.`);
+                        resetGame();
+                    }
+                }, 1200);
+            }
+        }
+
+        function updateLivesUI() {
+            const container = document.getElementById('livesContainer');
+            container.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                const icon = document.createElement('i');
+                if (i < lives) {
+                    icon.className = "fa-solid fa-heart text-rose-500";
+                } else {
+                    icon.className = "fa-regular fa-heart text-slate-700";
+                }
+                container.appendChild(icon);
+            }
+        }
+
+        function resetGame() {
             currentLevelIndex = 0;
             currentQuestionIndex = 0;
-
+            score = 0;
+            lives = 3;
+            document.getElementById('scoreText').textContent = "0 PTS";
             updateLivesUI();
-            updateScoreUI();
-            closeModal('end-game-modal');
-            renderLevelMap();
-            setupCurrentPatientState();
+            loadCurrentLevelState();
         }
+
+        function calculateBMI() {
+            const w = parseFloat(document.getElementById('calcWeight').value);
+            const h = parseFloat(document.getElementById('calcHeight').value);
+            const badge = document.getElementById('bmiCategoryBadge');
+
+            if (w > 0 && h > 0) {
+                const bmi = (w / (h * h)).toFixed(1);
+                document.getElementById('bmiResult').textContent = `IMC: ${bmi} kg/m²`;
+
+                if (bmi < 18.5) {
+                    badge.textContent = "Bajo Peso";
+                    badge.className = "text-[9px] px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800";
+                } else if (bmi >= 18.5 && bmi <= 24.9) {
+                    badge.textContent = "Normal";
+                    badge.className = "text-[9px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800";
+                } else if (bmi >= 25.0 && bmi <= 29.9) {
+                    badge.textContent = "Sobrepeso";
+                    badge.className = "text-[9px] px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800";
+                } else {
+                    badge.textContent = "Obesidad";
+                    badge.className = "text-[9px] px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800";
+                }
+            } else {
+                document.getElementById('bmiResult').textContent = `Ingrese peso y talla válidos`;
+                badge.textContent = "--";
+            }
+        }
+
+        function calculateFPP() {
+            const fumVal = document.getElementById('calcFUM').value;
+            if (fumVal) {
+                const fumDate = new Date(fumVal);
+                const today = new Date();
+
+                const diffTime = Math.abs(today - fumDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const weeks = Math.floor(diffDays / 7);
+
+                const fppDate = new Date(fumDate);
+                fppDate.setDate(fppDate.getDate() + 7);
+                fppDate.setMonth(fppDate.getMonth() - 3);
+                fppDate.setFullYear(fppDate.getFullYear() + 1);
+
+                document.getElementById('fppResult').textContent = `FPP: ${fppDate.toLocaleDateString()}`;
+                document.getElementById('gestoEG').textContent = `${weeks} sem`;
+                
+                let estWeight = 0;
+                let estAU = 0;
+                if (weeks >= 12) {
+                    estWeight = Math.round(Math.pow(weeks, 2.2) * 1.8);
+                    estAU = Math.max(0, weeks - 1);
+                }
+                document.getElementById('gestoPeso').textContent = estWeight > 0 ? `~${estWeight} g` : '-- g';
+                document.getElementById('gestoAU').textContent = estAU > 0 ? `~${estAU} cm` : '-- cm';
+
+            } else {
+                document.getElementById('fppResult').textContent = `Seleccione una FUM`;
+            }
+        }
+
+        window.onload = function() {
+            loadCurrentLevelState();
+        };
     </script>
 </body>
 </html>
